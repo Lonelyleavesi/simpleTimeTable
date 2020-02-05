@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="TextView" />
+
+        <Spinner
+            android:id="@+id/week_spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/button"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="demo"
+            android:textAllCaps="false" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="29dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/month_view"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="#C3E2BE"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/monday_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="#C3E2BE"
+            android:gravity="center"
+            android:text="星期一"
+            android:textColor="#000000"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tuesday_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="#C3E2BE"
+            android:gravity="center"
+            android:text="星期二"
+            android:textColor="#000000"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/wednesday_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="#C3E2BE"
+            android:gravity="center"
+            android:text="星期三"
+            android:textColor="#000000"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/thursday_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="#C3E2BE"
+            android:gravity="center"
+            android:text="星期四"
+            android:textColor="#000000"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/friday_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="#C3E2BE"
+            android:gravity="center"
+            android:text="星期五"
+            android:textColor="#000000"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/saturday_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="#C3E2BE"
+            android:gravity="center"
+            android:text="星期六"
+            android:textColor="#000000"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/sunday_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="#C3E2BE"
+            android:gravity="center"
+            android:text="星期天"
+            android:textColor="#000000"
+            android:visibility="visible" />
+
+    </LinearLayout>
+
+    <include
+        layout="@layout/coursetables"
+        />
+
+</LinearLayout>
