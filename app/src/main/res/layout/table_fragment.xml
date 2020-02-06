@@ -2,9 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <TextView
@@ -15,11 +17,29 @@
             android:gravity="center"
             android:text="课程表" />
 
-        <Spinner
-            android:id="@+id/id_spinner_week"
+        <TextView
+            android:id="@+id/textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="0.25"
+            android:gravity="right"
+            android:text="第" />
+
+        <Spinner
+            android:id="@+id/id_spinner_week"
+            style="@android:style/Widget.DeviceDefault.Light.Spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.75"
+            android:spinnerMode="dropdown" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:gravity="left"
+            android:text="周" />
 
         <Button
             android:id="@+id/button"
