@@ -9,6 +9,8 @@ import android.os.Bundle;
 
 import com.project.fragment.timeTableFragment;
 
+import org.litepal.LitePal;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -16,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         replaceFragment(new timeTableFragment());
+        LitePal.getDatabase();
         getSupportActionBar().hide();
     }
 

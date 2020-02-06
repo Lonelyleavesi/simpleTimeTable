@@ -8,14 +8,15 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/id_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:gravity="center"
+            android:text="课程表" />
 
         <Spinner
-            android:id="@+id/week_spinner"
+            android:id="@+id/id_spinner_week"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
@@ -26,7 +27,6 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="demo"
             android:textAllCaps="false" />
     </LinearLayout>
 

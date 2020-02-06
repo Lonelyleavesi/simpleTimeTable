@@ -42,10 +42,9 @@ public class timeTableFragment extends Fragment {
         TableRow[] childsRow = new TableRow[courseTable.getChildCount()];
         for(int i=0;i<childsRow.length;i++){
             childsRow[i] = (TableRow) courseTable.getChildAt(i);
-            LinearLayout simpleLinearLayout = (LinearLayout) childsRow[i].getChildAt(0);
             ArrayList<TextView> simpleRowView = new ArrayList<TextView>();
-            for (int j = 0 ; j < simpleLinearLayout.getChildCount(); j++){
-                TextView temp = (TextView) simpleLinearLayout.getChildAt(j);
+            for (int j = 0 ; j < childsRow[i].getChildCount(); j++){
+                TextView temp = (TextView) childsRow[i].getChildAt(j);
                 simpleRowView.add(temp);
             }
             courseArray.add(simpleRowView);
@@ -61,7 +60,7 @@ public class timeTableFragment extends Fragment {
         /*
         demo
          */
-        for (int i = 0 ; i < courseArray.size()-1; i ++)
+        for (int i = 0 ; i < courseArray.size(); i ++)
             for (int j = 1 ; j < courseArray.get(i).size();j++){
                 TextView temp = courseArray.get(i).get(j);
                 temp.setText("ababfdabfabfdabfabfd  ");
