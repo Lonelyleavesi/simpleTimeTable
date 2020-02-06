@@ -1,5 +1,7 @@
 package com.project.fragment;
 
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,8 +32,8 @@ public class timeTableFragment extends Fragment {
        View view = inflater.inflate(R.layout.table_fragment,container,false);
        courseArray = new ArrayList<>();
        bindViewToArray(view);
-        upDateTimeTable();
-       return view;
+       upDateTimeTable();
+        return view;
     }
 
     /*
@@ -61,9 +63,20 @@ public class timeTableFragment extends Fragment {
         demo
          */
         for (int i = 0 ; i < courseArray.size(); i ++)
+        {
             for (int j = 1 ; j < courseArray.get(i).size();j++){
-                TextView temp = courseArray.get(i).get(j);
-                temp.setText("ababfdabfabfdabfabfd  ");
+                if (j == courseArray.get(i).size()-1)
+                {
+                    TextView temp = courseArray.get(i).get(j);
+                    temp.setText("专业综合课程设计");
+                    temp.setBackgroundResource(R.drawable.coursetable_courseitem_border);
+                }
+                else
+                {
+                    TextView temp = courseArray.get(i).get(j);
+                    temp.setText("  ");
+                }
             }
+        }
     }
 }
