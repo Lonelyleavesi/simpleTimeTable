@@ -1,4 +1,4 @@
-package com.project.timetabletest;
+package com.project.activity;
 
 import org.junit.Test;
 

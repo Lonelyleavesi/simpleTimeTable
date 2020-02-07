@@ -1,4 +1,4 @@
-package com.project.timetabletest;
+package com.project.activity;
 
 import android.content.Context;
 

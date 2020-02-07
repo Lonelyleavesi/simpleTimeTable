@@ -5,6 +5,8 @@ import org.litepal.crud.LitePalSupport;
 public class course extends LitePalSupport {
     private int id;
     private String name;   //课程名称
+    private String teacherName; //任课教师名称
+    private String classRoom; //教室名称
     private int day;       //星期几
     private int lessonNo;  //第几节课
     private int weekNo;    //第几周
@@ -48,4 +50,12 @@ public class course extends LitePalSupport {
     public void setWeekNo(int weekNo) {
         this.weekNo = weekNo;
     }
+
+    public String getTeacherName() {  return teacherName;    }
+
+    public void setTeacherName(String teacherName) { this.teacherName = teacherName;   }
+
+    public String getClassRoom() {   return classRoom;    }
+
+    public void setClassRoom(String classRoom) {    this.classRoom = classRoom;   }
 }
