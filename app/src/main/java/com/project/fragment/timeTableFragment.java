@@ -69,9 +69,9 @@ public class timeTableFragment extends Fragment {
     }
 
     /**
+     * 将CourseTable.xml中的各个课程位置的textview放入到MainActivit中arrary中方便后续操作
      * @param view 碎片包含的页面
      * @author chen yujie
-     * 将CourseTable.xml中的各个课程位置的textview放入到MainActivit中arrary中方便后续操作
      */
     private void bindViewToArray(View view){
         courseTable = (TableLayout) view.findViewById(R.id.tableLayout_coursetable);

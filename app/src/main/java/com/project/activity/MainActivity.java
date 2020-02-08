@@ -26,20 +26,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
-     * @author chen yujie
      * 绑定按钮和监听器逻辑
+     * @author chen yujie
      */
     private void boundButtonToListener(){
         Button displayTable = (Button) findViewById(R.id.button_displaytable);
         displayTable.setOnClickListener(this);
-        Button addCourse = (Button)findViewById(R.id.button_addcourse);
+        Button addCourse = (Button)findViewById(R.id.button_addCourse);
         addCourse.setOnClickListener(this);
     }
 
     /**
+     * 替换主页面所使用的的函数，将主页面变为传入的fragment
      * @param fragment   需要展示在主页面的fragment
      * @author chen yujie
-     * 替换主页面所使用的的函数，将主页面变为传入的fragment
      */
     private void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -53,9 +53,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
+     * 设置按钮的监听器
      * @author chen yujie
      * @param v 被按下的按钮的view实例
-     * 设置按钮的监听器
      */
     @Override
     public void onClick(View v) {
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_displaytable:{
                 replaceFragment(new timeTableFragment());
             }
-            case R.id.button_addcourse:{
+            case R.id.button_addCourse:{
                 Intent intent = new Intent(MainActivity.this, addCourseActivity.class);
                 startActivity(intent);
             }

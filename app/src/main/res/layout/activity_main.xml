@@ -14,26 +14,28 @@
         android:layout_weight="1"
         >
     </FrameLayout>
+
     <LinearLayout
         android:id="@+id/group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/button_displaytable"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="课程表" />
 
         <Button
-            android:id="@+id/button_addcourse"
+            android:id="@+id/button_addCourse"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="添加课程" />
 
@@ -41,9 +43,17 @@
             android:id="@+id/button_checkAllCourse"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="查看所有课程" />
+
+        <Button
+            android:id="@+id/button2"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="设置" />
     </LinearLayout>
 
 </LinearLayout>
