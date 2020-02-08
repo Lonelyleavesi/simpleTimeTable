@@ -3,67 +3,117 @@ package com.project.activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
+import java.util.List;
 
 
-public class addCourseActivity extends AppCompatActivity implements View.OnClickListener,CompoundButton.OnCheckedChangeListener{
+public class addCourseActivity extends AppCompatActivity implements View.OnClickListener,CompoundButton.OnCheckedChangeListener, AdapterView.OnItemSelectedListener{
 
-    public static ArrayList<ArrayList<Button>> weekButtonArray;
-    public static Boolean [][] weekButtonState;
-    private TableLayout clickWeekTableLayout;
-    private CheckBox oddWeekBox;
-    private CheckBox evenWeekBox;
-    private CheckBox allWeekBox;
+    private EditText addCourseName;
+    private EditText addCourseTeacher;
+    private EditText addCourseRoom;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addcourse);
         initMember();
+        initSpinner();
         boundClickButtonToArray();
         boundButtonToListener();
+
         getSupportActionBar().hide();
     }
 
+    /**
+     * 初始化成员变量
+     */
     private void initMember(){
+        addCourseName = (EditText) findViewById(R.id.edit_addCourse_name);
+        addCourseTeacher = (EditText) findViewById(R.id.edit_addCourse_teacherName);
+        addCourseRoom = (EditText)  findViewById(R.id.edit_addCourse_classRoom);
+        addCourseNoStart = (Spinner) findViewById(R.id.spinner_addcourseNo_start);
+        courseStart = 0;
+        addCourseNoEnd = (Spinner) findViewById(R.id.spinner_addcourseNo_end);
+        courseEnd = 0;
         weekButtonArray = new ArrayList<>();
         weekButtonState = new Boolean[5][5];
+        dayButtonArray = new ArrayList<>();
+        dayButtonState = new Boolean[7];
         clickWeekTableLayout = (TableLayout) findViewById(R.id.tableLayout_clickweek);
         oddWeekBox = (CheckBox) findViewById(R.id.checkBox_oddweek);
         evenWeekBox= (CheckBox) findViewById(R.id.checkBox_evenweek);
         allWeekBox = (CheckBox) findViewById(R.id.checkBox_allweek);
     }
 
+    private Spinner  addCourseNoStart;
+    private int courseStart;
+    private Spinner  addCourseNoEnd;
+    private int courseEnd;
+    /**
+     * 初始化Spinner （用于选第几节课）
+     */
+    private void initSpinner(){
+        List<String> courseNo= new ArrayList<String>();
+        for (int i = 1 ; i <= 14 ; i++){
+            courseNo.add(Integer.toString(i));
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,courseNo);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        addCourseNoStart.setAdapter(adapter);
+        addCourseNoEnd.setAdapter(adapter);
+        addCourseNoStart.setOnItemSelectedListener(this);
+        addCourseNoEnd.setOnItemSelectedListener(this);
+    }
+
+    private TableLayout clickWeekTableLayout;
+    private ArrayList<ArrayList<Button>> weekButtonArray;
+    private Boolean [][] weekButtonState;
+    private ArrayList<Button> dayButtonArray;
+    private Boolean [] dayButtonState;
     /**
      * 将添加课程的周数储存在ArrayList中方便后续操作
      */
     private void boundClickButtonToArray() {
-        TableRow[] childsRow = new TableRow[clickWeekTableLayout.getChildCount()];
-        for(int i=0;i<childsRow.length;i++){
-            childsRow[i] = (TableRow) clickWeekTableLayout.getChildAt(i);
+        TableRow[] weeksRow = new TableRow[clickWeekTableLayout.getChildCount()];
+        for(int i=0;i<weeksRow.length;i++){
+            weeksRow[i] = (TableRow) clickWeekTableLayout.getChildAt(i);
             ArrayList<Button> simpleRowView = new ArrayList<Button>();
-            for (int j = 0 ; j < childsRow[i].getChildCount(); j++){
-                Button temp = (Button) childsRow[i].getChildAt(j);
+            for (int j = 0 ; j < weeksRow[i].getChildCount(); j++){
+                Button temp = (Button) weeksRow[i].getChildAt(j);
                 simpleRowView.add(temp);
                 weekButtonState[i][j] = false;
             }
             weekButtonArray.add(simpleRowView);
-            Log.d("TimeTable","The clieckable Size is "+ weekButtonArray.size()+"; And " +
-                    "the size of a item is "+ weekButtonArray.get(0).size());
         }
-        updateWeekButtonState();
+        Log.d("TimeTable","The WeekButtonArray Size is "+ weekButtonArray.size()+"; And " +
+                "the size of a item is "+ weekButtonArray.get(0).size());
+        TableRow dayRow = findViewById(R.id.tableRow_day);
+        for (int i = 0 ; i < dayRow.getChildCount() ; i ++)
+        {
+            Button temp = (Button) dayRow.getChildAt(i);
+            dayButtonArray.add(temp);
+            dayButtonState[i] = false;
+        }
+        Log.d("TimeTable","The DayButtonArray Size is "+ dayButtonArray.size());
+        updateButtonState();
     }
 
     /**
      * 根据储存的按钮状态更新按钮的颜色。
      */
-    private void updateWeekButtonState(){
+    private void updateButtonState(){
         int count = 1;
         for (int i = 0; i < weekButtonArray.size(); i ++){
             for (int j = 0 ; j < weekButtonArray.get(i).size(); j ++)
@@ -79,6 +129,14 @@ public class addCourseActivity extends AppCompatActivity implements View.OnClick
                 count++;
             }
         }
+        for (int i = 0 ; i < dayButtonArray.size() ; i ++){
+            if (dayButtonState[i])
+            {
+                dayButtonArray.get(i).setBackgroundResource(R.drawable.addcourse_day_clicked);
+            }else{
+                dayButtonArray.get(i).setBackgroundResource(R.drawable.addcourse_day_unclicked);
+            }
+        }
     }
 
     /**
@@ -90,14 +148,24 @@ public class addCourseActivity extends AppCompatActivity implements View.OnClick
         backButton.setOnClickListener(this);
         Button finishButton = (Button)findViewById(R.id.button_addcourse_finish);
         finishButton.setOnClickListener(this);
-        boundWeekButtonToListener();
+        boundDayButtonsToListener();
+        boundWeekButtonsToListener();
         boundCheckBoxToListener();
+    }
+
+    /**
+     * 为每一个dayButton添加监听器
+     */
+    private  void boundDayButtonsToListener(){
+        for (int i = 0 ; i < dayButtonArray.size() ; i ++){
+                dayButtonArray.get(i).setOnClickListener(this);
+        }
     }
 
     /**
      * 为每一个weekButton添加监听器，用于改变选中状态
      */
-    private void boundWeekButtonToListener(){
+    private void boundWeekButtonsToListener(){
         //为weekButton添加监听器
         for (int i = 0; i < weekButtonArray.size(); i ++) {
             for (int j = 0; j < weekButtonArray.get(i).size(); j++) {
@@ -105,17 +173,10 @@ public class addCourseActivity extends AppCompatActivity implements View.OnClick
             }
         }
     }
-    /**
-     * 此函数用于更新周数被点击的状态，通过传入周数
-     * @author chen yujie
-     * @param weekNum 被点击的周数
-     */
-    private void clickButtonByNum( int weekNum){
-        weekButtonState[(weekNum-1)/5][(weekNum-1)%5] = !weekButtonState[(weekNum-1)/5][(weekNum-1)%5];
-        Log.d("TimeTable","You click Button "+weekNum+" And its state is "+ weekButtonState[(weekNum-1)/5][(weekNum-1)%5]);
-        updateWeekButtonState();
-    }
 
+    private CheckBox oddWeekBox;
+    private CheckBox evenWeekBox;
+    private CheckBox allWeekBox;
     /**
      * 用于为单双周 checkbox 添加监听器
      */
@@ -134,7 +195,7 @@ public class addCourseActivity extends AppCompatActivity implements View.OnClick
                 weekButtonState[i][j] = false;
             }
         }
-        updateWeekButtonState();
+        updateButtonState();
     }
 
     /**
@@ -148,7 +209,20 @@ public class addCourseActivity extends AppCompatActivity implements View.OnClick
                     finish();
             }break;
             case R.id.button_addcourse_finish:{
-
+                submitCourse();
+            }break;
+            case R.id.button_addCourse_day1:
+            case R.id.button_addCourse_day2:
+            case R.id.button_addCourse_day3:
+            case R.id.button_addCourse_day4:
+            case R.id.button_addCourse_day5:
+            case R.id.button_addCourse_day6:
+            case R.id.button_addCourse_day7:{
+                Button self = (Button) findViewById(v.getId());
+                int dayNum = Integer.parseInt(self.getText().toString());
+                dayButtonState[dayNum-1] = !dayButtonState[dayNum-1];
+                Log.d("TimeTable","You click Day Button "+dayNum+" And its state is "+ dayButtonState[dayNum-1]);
+                updateButtonState();
             }break;
             default:{
                 Button self = (Button) findViewById(v.getId());
@@ -156,6 +230,24 @@ public class addCourseActivity extends AppCompatActivity implements View.OnClick
                 clickButtonByNum(weekNum);
             }
         }
+    }
+
+    /**
+     * 根据当前的页面内容添加课程至数据库中
+     */
+    private void submitCourse(){
+
+    }
+
+    /**
+     * 此函数用于更新周数被点击的状态，通过传入周数
+     * @author chen yujie
+     * @param weekNum 被点击的周数
+     */
+    private void clickButtonByNum( int weekNum){
+        weekButtonState[(weekNum-1)/5][(weekNum-1)%5] = !weekButtonState[(weekNum-1)/5][(weekNum-1)%5];
+        Log.d("TimeTable","You click Week Button "+weekNum+" And its state is "+ weekButtonState[(weekNum-1)/5][(weekNum-1)%5]);
+        updateButtonState();
     }
 
     /**
@@ -177,7 +269,7 @@ public class addCourseActivity extends AppCompatActivity implements View.OnClick
                                     else
                                         weekButtonState[i][j]=false;
                                 }
-                                updateWeekButtonState();
+                                updateButtonState();
                             }
                         } else
                         {
@@ -195,7 +287,7 @@ public class addCourseActivity extends AppCompatActivity implements View.OnClick
                                     else
                                         weekButtonState[i][j]=false;
                                 }
-                                updateWeekButtonState();
+                                updateButtonState();
                             }
                         } else
                         {
@@ -210,7 +302,7 @@ public class addCourseActivity extends AppCompatActivity implements View.OnClick
                                 for (int j = 0 ; j < weekButtonState[i].length ; j++){
                                         weekButtonState[i][j]=true;
                                 }
-                                updateWeekButtonState();
+                                updateButtonState();
                             }
                         } else
                         {
@@ -218,5 +310,32 @@ public class addCourseActivity extends AppCompatActivity implements View.OnClick
                         }break;
                     }
         }
+    }
+
+    /**
+     * spinner的监听器
+     * @param parent 用于区别点击的哪个spinner，通过parent.getId 对比
+     * @param view   无
+     * @param position 点击的item元素
+     * @param id    是你选中的某个Spinner中的某个下来值所在的行，一般自上而下从0开始，
+     */
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        switch (parent.getId()){
+            case R.id.spinner_addcourseNo_start:{
+                String str =parent.getItemAtPosition(position).toString();
+                courseStart = Integer.parseInt(str);
+            }break;
+            case R.id.spinner_addcourseNo_end:{
+                String str =parent.getItemAtPosition(position).toString();
+                courseEnd = Integer.parseInt(str);
+            }break;
+        }
+        Log.d("TimeTable", "onItemSelected: courseStart is " + courseStart + " courseEnd is "+courseEnd);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

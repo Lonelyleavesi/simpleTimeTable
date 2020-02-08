@@ -36,20 +36,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         addCourse.setOnClickListener(this);
     }
 
+    static boolean init = true;
     /**
      * 替换主页面所使用的的函数，将主页面变为传入的fragment
+     * 在已经替换成课程表碎片的情况下继续点课程表将只进行刷新操作并返回，为了防止第一次运行时也返回，添加init变量
      * @param fragment   需要展示在主页面的fragment
      * @author chen yujie
      */
     private void replaceFragment(Fragment fragment){
+        if (fragment.getClass().equals(timeTableFragment.class) && !init)
+        {
+            timeTableFragment.upDateTimeTable();
+            return;
+        }
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_layout,fragment);
-        if (fragment.getClass().equals(addCourseActivity.class))
-        {
-            transaction.addToBackStack(null);
-        }
         transaction.commit();
+        init = false;
     }
 
     /**
@@ -62,11 +66,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()){
             case R.id.button_displaytable:{
                 replaceFragment(new timeTableFragment());
-            }
+            }break;
             case R.id.button_addCourse:{
                 Intent intent = new Intent(MainActivity.this, addCourseActivity.class);
                 startActivity(intent);
-            }
+            }break;
         }
     }
 }
