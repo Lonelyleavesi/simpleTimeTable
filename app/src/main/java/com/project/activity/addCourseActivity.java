@@ -1,6 +1,7 @@
 package com.project.activity;
 
 import android.os.Bundle;
+import android.os.Debug;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,7 +13,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.project.item.course;
+import com.project.tools.DebugHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -233,10 +240,44 @@ public class addCourseActivity extends AppCompatActivity implements View.OnClick
     }
 
     /**
-     * 根据当前的页面内容添加课程至数据库中
+     * 根据当前的页面内容添加课程至数据库中,对于每一天，每一周都算一条数据。
      */
     private void submitCourse(){
-
+        if (addCourseName.getText().toString().isEmpty()){
+            Toast.makeText(this,"课程名不能为空",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (courseEnd < courseStart){
+            Toast.makeText(this,"课程结束课号不得小于课程开始课号",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        boolean dayAndWeekIsEmpty = true;
+        for (int i = 0 ; i < dayButtonState.length ; i++){
+            if (dayButtonState[i])
+                for (int m = 0 ; m < weekButtonState.length; m ++)
+                    for (int n = 0; n < weekButtonState[m].length ; n++)
+                    {
+                        if (weekButtonState[m][n])
+                        {
+                            dayAndWeekIsEmpty = false;
+                            course course = new course();
+                            course.setName(addCourseName.getText().toString());
+                            course.setTeacherName(addCourseTeacher.getText().toString());
+                            course.setClassRoom(addCourseRoom.getText().toString());
+                            String day_and_course = (i+1)+","+courseStart+","+courseEnd;
+                            course.setDay_and_course(day_and_course);
+                            course.setWeekNo(m*weekButtonState.length+n+1);
+                            course.save();
+                            DebugHelper.showCourse(course);
+                        }
+                    }
+        }
+        if (dayAndWeekIsEmpty){
+            Toast.makeText(this,"添加课程失败，周与星期不可为空",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Toast.makeText(this,"添加课程成功",Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     /**

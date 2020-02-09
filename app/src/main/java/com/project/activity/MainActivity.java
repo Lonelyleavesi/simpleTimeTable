@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void replaceFragment(Fragment fragment){
         if (fragment.getClass().equals(timeTableFragment.class) && !init)
         {
-            timeTableFragment.upDateTimeTable();
+            timeTableFragment.upDateTimeTable(timeTableFragment.currentWeek);
             return;
         }
         FragmentManager fragmentManager = getSupportFragmentManager();

@@ -15,6 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.project.activity.R;
+import com.project.item.course;
+import com.project.tools.DebugHelper;
+
+import org.litepal.LitePal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +31,7 @@ public class timeTableFragment extends Fragment implements AdapterView.OnItemSel
        initMember(view);
        initCurrentSpinner();
        bindViewToArray();
-       upDateTimeTable();
+       upDateTimeTable(currentWeek);
         return view;
     }
 
@@ -43,7 +47,7 @@ public class timeTableFragment extends Fragment implements AdapterView.OnItemSel
     }
 
     private Spinner currentWeekSpinner;
-    private static int currentWeek;
+    public static int currentWeek;
     /**
      * 初始化选择第几周的spinner 默认周数为1~25周
      * @author chen yujie
@@ -83,27 +87,47 @@ public class timeTableFragment extends Fragment implements AdapterView.OnItemSel
     /**
      *  根据数据库中的数据更新
      * @author chen yujie
+     * @param week  表示第几周
      */
-    public static void upDateTimeTable(){
-        /*
-        demo
-         */
+    public static void upDateTimeTable( int week){
+        clearTimeTable();
+        List<course> courses = LitePal.where("weekNo = ?",week+"").find(course.class);
+        for (course course : courses){
+            DebugHelper.showCourse(course);
+            String[] day_and_course = course.getDay_and_course().split(",");
+            int day = Integer.parseInt(day_and_course[0]);
+            int start = Integer.parseInt(day_and_course[1]);
+            int end = Integer.parseInt(day_and_course[2]);
+            for (int i =start ; i <= end ; i++)
+            {
+                setCourseTableItem(course.getName(),i,day);
+            }
+        }
+    }
+
+    /**
+     * 使timeTable全刷新为空
+     */
+    private static void clearTimeTable(){
         for (int i = 0 ; i < courseArray.size(); i ++)
         {
             for (int j = 1 ; j < courseArray.get(i).size();j++){
-                if (j == courseArray.get(i).size()-1)
-                {
-                    TextView temp = courseArray.get(i).get(j);
-                    temp.setText("专业综合课程设计"+currentWeek);
-                    temp.setBackgroundResource(R.drawable.coursetable_courseitem_border);
-                }
-                else
-                {
-                    TextView temp = courseArray.get(i).get(j);
-                    temp.setText("  ");
-                }
+                TextView temp = courseArray.get(i).get(j);
+                temp.setText("  ");
+                temp.setBackgroundResource(0);
             }
         }
+    }
+    /**
+     * 在课程表view中对应的位置放置对应的课程
+     * @param courseName  课程名
+     * @param no   上课的序号
+     * @param day  星期几
+     */
+    private static void setCourseTableItem(String courseName, int no, int day){
+        TextView temp = courseArray.get(no-1).get(day);
+        temp.setText(courseName);
+        temp.setBackgroundResource(R.drawable.coursetable_courseitem_border);
     }
 
     @Override
@@ -112,7 +136,7 @@ public class timeTableFragment extends Fragment implements AdapterView.OnItemSel
             case R.id.spinner_currentweek:{
                 String str_week=parent.getItemAtPosition(position).toString();
                 currentWeek = Integer.parseInt(str_week);
-                upDateTimeTable();
+                upDateTimeTable(currentWeek);
             }break;
         }
     }
