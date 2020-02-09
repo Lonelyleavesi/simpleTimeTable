@@ -94,10 +94,9 @@ public class timeTableFragment extends Fragment implements AdapterView.OnItemSel
         List<course> courses = LitePal.where("weekNo = ?",week+"").find(course.class);
         for (course course : courses){
             DebugHelper.showCourse(course);
-            String[] day_and_course = course.getDay_and_course().split(",");
-            int day = Integer.parseInt(day_and_course[0]);
-            int start = Integer.parseInt(day_and_course[1]);
-            int end = Integer.parseInt(day_and_course[2]);
+            int day = course.getDay();
+            int start = course.getStart();
+            int end = course.getEnd();
             for (int i =start ; i <= end ; i++)
             {
                 setCourseTableItem(course.getName(),i,day);

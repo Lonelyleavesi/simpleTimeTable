@@ -17,8 +17,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.project.fragment.timeTableFragment;
 import com.project.item.course;
 import com.project.tools.DebugHelper;
+
+import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -216,7 +219,7 @@ public class addCourseActivity extends AppCompatActivity implements View.OnClick
                     finish();
             }break;
             case R.id.button_addcourse_finish:{
-                submitCourse();
+                addCourse();
             }break;
             case R.id.button_addCourse_day1:
             case R.id.button_addCourse_day2:
@@ -242,7 +245,7 @@ public class addCourseActivity extends AppCompatActivity implements View.OnClick
     /**
      * 根据当前的页面内容添加课程至数据库中,对于每一天，每一周都算一条数据。
      */
-    private void submitCourse(){
+    private void addCourse(){
         if (addCourseName.getText().toString().isEmpty()){
             Toast.makeText(this,"课程名不能为空",Toast.LENGTH_SHORT).show();
             return;
@@ -252,6 +255,7 @@ public class addCourseActivity extends AppCompatActivity implements View.OnClick
             return;
         }
         boolean dayAndWeekIsEmpty = true;
+        List<course> courses = new ArrayList<>();
         for (int i = 0 ; i < dayButtonState.length ; i++){
             if (dayButtonState[i])
                 for (int m = 0 ; m < weekButtonState.length; m ++)
@@ -259,15 +263,23 @@ public class addCourseActivity extends AppCompatActivity implements View.OnClick
                     {
                         if (weekButtonState[m][n])
                         {
+                            int week = m*weekButtonState.length+n+1;
+                            if (haveConflict(week,i+1,courseStart,courseEnd))
+                            {
+                                Toast.makeText(this,"添加课程失败，第"+week+"周,星期"+(i+1)+"存在课程冲突",
+                                        Toast.LENGTH_SHORT).show();
+                                return ;
+                            }
                             dayAndWeekIsEmpty = false;
                             course course = new course();
                             course.setName(addCourseName.getText().toString());
                             course.setTeacherName(addCourseTeacher.getText().toString());
                             course.setClassRoom(addCourseRoom.getText().toString());
-                            String day_and_course = (i+1)+","+courseStart+","+courseEnd;
-                            course.setDay_and_course(day_and_course);
-                            course.setWeekNo(m*weekButtonState.length+n+1);
-                            course.save();
+                            course.setDay(i+1);
+                            course.setStart(courseStart);
+                            course.setEnd(courseEnd);
+                            course.setWeekNo(week);
+                            courses.add(course);
                             DebugHelper.showCourse(course);
                         }
                     }
@@ -276,12 +288,36 @@ public class addCourseActivity extends AppCompatActivity implements View.OnClick
             Toast.makeText(this,"添加课程失败，周与星期不可为空",Toast.LENGTH_SHORT).show();
             return;
         }
+        //不存在冲突 则开始添加课程
+        submitCourse(courses);
         Toast.makeText(this,"添加课程成功",Toast.LENGTH_SHORT).show();
+        timeTableFragment.upDateTimeTable(timeTableFragment.currentWeek);
         finish();
     }
 
     /**
-     * 此函数用于更新周数被点击的状态，通过传入周数
+     *传入周数，天数，上课的开始以及结束，检查是否已经有课与新添加的课程冲突
+     * @return
+     */
+    private boolean haveConflict(int week, int day, int start,int end){
+        List<course> courses = LitePal.where("weekNo = ? and day = ?", week+"",day+"").find(course.class);
+        for (course course : courses){
+            DebugHelper.showCourse(course);
+            if (!(course.getStart()> end || course.getEnd() < start))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void submitCourse(List<course> courses){
+        for (course course:courses){
+            course.save();
+        }
+    }
+    /**
+     * 此函数用于通过传入周数更新该周数被点击的状态，
      * @author chen yujie
      * @param weekNum 被点击的周数
      */

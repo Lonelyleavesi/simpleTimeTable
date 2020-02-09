@@ -9,8 +9,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.project.fragment.timeTableFragment;
+import com.project.item.course;
+
 import org.litepal.LitePal;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {

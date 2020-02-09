@@ -7,7 +7,9 @@ public class course extends LitePalSupport {
     private String name;   //课程名称
     private String teacherName; //任课教师名称
     private String classRoom; //教室名称
-    private String day_and_course;       //星期几的第几节课 用 a,b,c的方法储存星期a 第b节课至第c节课
+    private int day;       //星期几
+    private int start;        //开始课程时间
+    private int end;        //结束课程时间
     private int weekNo;    //第几周
 
     public int getId() {
@@ -42,7 +44,27 @@ public class course extends LitePalSupport {
 
     public void setClassRoom(String classRoom) {    this.classRoom = classRoom;   }
 
-    public String getDay_and_course() {   return day_and_course;   }
+    public int getDay() {
+        return day;
+    }
 
-    public void setDay_and_course(String day_and_course) { this.day_and_course = day_and_course;    }
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    public void setEnd(int end) {
+        this.end = end;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
 }
