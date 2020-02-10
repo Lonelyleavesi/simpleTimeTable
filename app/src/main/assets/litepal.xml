@@ -3,6 +3,6 @@
     <dbname value="classSchedule" />
     <version value="6" />
     <list>
-        <mapping class="com.project.item.course"></mapping>
+        <mapping class="com.project.item.Course"></mapping>
     </list>
 </litepal>

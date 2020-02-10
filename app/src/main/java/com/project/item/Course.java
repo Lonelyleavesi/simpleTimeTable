@@ -2,7 +2,7 @@ package com.project.item;
 
 import org.litepal.crud.LitePalSupport;
 
-public class course extends LitePalSupport {
+public class Course extends LitePalSupport {
     private int id;
     private String name;   //课程名称
     private String teacherName; //任课教师名称

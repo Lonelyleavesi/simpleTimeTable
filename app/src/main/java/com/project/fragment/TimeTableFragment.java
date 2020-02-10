@@ -15,14 +15,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.project.activity.R;
-import com.project.item.course;
+import com.project.item.Course;
 import com.project.tools.DebugHelper;
 
 import org.litepal.LitePal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class timeTableFragment extends Fragment implements AdapterView.OnItemSelectedListener{
+public class TimeTableFragment extends Fragment implements AdapterView.OnItemSelectedListener{
 
     @Nullable
     @Override
@@ -32,7 +32,7 @@ public class timeTableFragment extends Fragment implements AdapterView.OnItemSel
        initCurrentSpinner();
        bindViewToArray();
        upDateTimeTable(currentWeek);
-        return view;
+       return view;
     }
 
     /**
@@ -79,7 +79,7 @@ public class timeTableFragment extends Fragment implements AdapterView.OnItemSel
                 simpleRowView.add(temp);
             }
             courseArray.add(simpleRowView);
-            Log.d("TimeTable","The course Size is "+courseArray.size()+"; And " +
+            Log.d("TimeTable","The Course Size is "+courseArray.size()+"; And " +
                     "the size of a item is "+ courseArray.get(0).size());
         }
     }
@@ -91,8 +91,8 @@ public class timeTableFragment extends Fragment implements AdapterView.OnItemSel
      */
     public static void upDateTimeTable( int week){
         clearTimeTable();
-        List<course> courses = LitePal.where("weekNo = ?",week+"").find(course.class);
-        for (course course : courses){
+        List<Course> cours = LitePal.where("weekNo = ?",week+"").find(Course.class);
+        for (Course course : cours){
             DebugHelper.showCourse(course);
             int day = course.getDay();
             int start = course.getStart();

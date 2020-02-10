@@ -29,7 +29,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="课程表" />
+            android:text="课程表"
+            android:background="@drawable/mainactivity_bottombar_border"
+            />
 
         <Button
             android:id="@+id/button_addCourse"
@@ -37,15 +39,19 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="添加课程" />
+            android:text="添加课程"
+            android:background="@drawable/mainactivity_bottombar_border"
+            />
 
         <Button
-            android:id="@+id/button_checkAllCourse"
+            android:id="@+id/button_showAllCourse"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="查看所有课程" />
+            android:text="查看所有课程"
+            android:background="@drawable/mainactivity_bottombar_border"
+            />
 
         <Button
             android:id="@+id/button2"
@@ -53,7 +59,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="设置" />
+            android:text="设置"
+            android:background="@drawable/mainactivity_bottombar_border"
+            />
     </LinearLayout>
 
 </LinearLayout>

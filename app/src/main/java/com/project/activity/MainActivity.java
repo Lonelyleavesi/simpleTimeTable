@@ -9,10 +9,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.project.fragment.timeTableFragment;
-import com.project.item.course;
+import com.project.fragment.ShowAllCourseFragment;
+import com.project.fragment.TimeTableFragment;
 
 import org.litepal.LitePal;
 
@@ -22,10 +21,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initMember();
         boundButtonToListener();
-        replaceFragment(new timeTableFragment());
+        replaceFragment(new TimeTableFragment());
         LitePal.getDatabase();
         getSupportActionBar().hide();
+    }
+
+    private void initMember(){
+        timeTableFragment = new TimeTableFragment();
+        addCourseActivity = new Intent(MainActivity.this, AddCourseActivity.class);
+        showAllCourseFragment = new ShowAllCourseFragment();
     }
 
     /**
@@ -37,28 +43,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         displayTable.setOnClickListener(this);
         Button addCourse = (Button)findViewById(R.id.button_addCourse);
         addCourse.setOnClickListener(this);
+        Button showAllCourses = (Button) findViewById(R.id.button_showAllCourse);
+        showAllCourses.setOnClickListener(this);
     }
 
-    static boolean init = true;
     /**
      * 替换主页面所使用的的函数，将主页面变为传入的fragment
-     * 在已经替换成课程表碎片的情况下继续点课程表将只进行刷新操作并返回，为了防止第一次运行时也返回，添加init变量
      * @param fragment   需要展示在主页面的fragment
      * @author chen yujie
      */
     private void replaceFragment(Fragment fragment){
-        if (fragment.getClass().equals(timeTableFragment.class) && !init)
-        {
-            timeTableFragment.upDateTimeTable(timeTableFragment.currentWeek);
-            return;
-        }
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_layout,fragment);
         transaction.commit();
-        init = false;
     }
 
+
+    TimeTableFragment timeTableFragment;
+    Intent addCourseActivity;
+    ShowAllCourseFragment showAllCourseFragment;
     /**
      * 设置按钮的监听器
      * @author chen yujie
@@ -68,11 +72,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.button_displaytable:{
-                replaceFragment(new timeTableFragment());
+                replaceFragment(timeTableFragment);
             }break;
             case R.id.button_addCourse:{
-                Intent intent = new Intent(MainActivity.this, addCourseActivity.class);
-                startActivity(intent);
+                startActivity(addCourseActivity);
+            }break;
+            case R.id.button_showAllCourse:{
+                replaceFragment(showAllCourseFragment);
             }break;
         }
     }

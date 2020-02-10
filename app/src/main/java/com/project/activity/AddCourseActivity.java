@@ -1,7 +1,6 @@
 package com.project.activity;
 
 import android.os.Bundle;
-import android.os.Debug;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,8 +16,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.project.fragment.timeTableFragment;
-import com.project.item.course;
+import com.project.fragment.TimeTableFragment;
+import com.project.item.Course;
 import com.project.tools.DebugHelper;
 
 import org.litepal.LitePal;
@@ -27,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class addCourseActivity extends AppCompatActivity implements View.OnClickListener,CompoundButton.OnCheckedChangeListener, AdapterView.OnItemSelectedListener{
+public class AddCourseActivity extends AppCompatActivity implements View.OnClickListener,CompoundButton.OnCheckedChangeListener, AdapterView.OnItemSelectedListener{
 
     private EditText addCourseName;
     private EditText addCourseTeacher;
@@ -255,7 +254,7 @@ public class addCourseActivity extends AppCompatActivity implements View.OnClick
             return;
         }
         boolean dayAndWeekIsEmpty = true;
-        List<course> courses = new ArrayList<>();
+        List<Course> courses = new ArrayList<>();
         for (int i = 0 ; i < dayButtonState.length ; i++){
             if (dayButtonState[i])
                 for (int m = 0 ; m < weekButtonState.length; m ++)
@@ -271,7 +270,7 @@ public class addCourseActivity extends AppCompatActivity implements View.OnClick
                                 return ;
                             }
                             dayAndWeekIsEmpty = false;
-                            course course = new course();
+                            Course course = new Course();
                             course.setName(addCourseName.getText().toString());
                             course.setTeacherName(addCourseTeacher.getText().toString());
                             course.setClassRoom(addCourseRoom.getText().toString());
@@ -291,7 +290,7 @@ public class addCourseActivity extends AppCompatActivity implements View.OnClick
         //不存在冲突 则开始添加课程
         submitCourse(courses);
         Toast.makeText(this,"添加课程成功",Toast.LENGTH_SHORT).show();
-        timeTableFragment.upDateTimeTable(timeTableFragment.currentWeek);
+        TimeTableFragment.upDateTimeTable(TimeTableFragment.currentWeek);
         finish();
     }
 
@@ -300,8 +299,8 @@ public class addCourseActivity extends AppCompatActivity implements View.OnClick
      * @return
      */
     private boolean haveConflict(int week, int day, int start,int end){
-        List<course> courses = LitePal.where("weekNo = ? and day = ?", week+"",day+"").find(course.class);
-        for (course course : courses){
+        List<Course> courses = LitePal.where("weekNo = ? and day = ?", week+"",day+"").find(Course.class);
+        for (Course course : courses){
             DebugHelper.showCourse(course);
             if (!(course.getStart()> end || course.getEnd() < start))
             {
@@ -311,8 +310,8 @@ public class addCourseActivity extends AppCompatActivity implements View.OnClick
         return false;
     }
 
-    private void submitCourse(List<course> courses){
-        for (course course:courses){
+    private void submitCourse(List<Course> cours){
+        for (Course course: cours){
             course.save();
         }
     }

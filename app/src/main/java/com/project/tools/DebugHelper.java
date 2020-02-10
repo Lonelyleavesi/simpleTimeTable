@@ -2,19 +2,19 @@ package com.project.tools;
 
 import android.util.Log;
 
-import com.project.item.course;
+import com.project.item.Course;
 
 public class DebugHelper {
-    public static void showCourse(course course){
+    public static void showCourse(Course course){
         Log.d("getCourse", "  ");
         Log.d("getCourse", "  ");
         Log.d("getCourse", "   ");
-        Log.d("getCourse", "course name is :"+course.getName());
-        Log.d("getCourse", "course teacher is :"+course.getTeacherName());
-        Log.d("getCourse", "course room is :"+course.getClassRoom());
-        Log.d("getCourse", "course day is :"+course.getDay());
-        Log.d("getCourse", "course start is :"+course.getStart());
-        Log.d("getCourse", "course end is :"+course.getEnd());
-        Log.d("getCourse", "course weekNo is :"+course.getWeekNo());
+        Log.d("getCourse", "Course name is :"+course.getName());
+        Log.d("getCourse", "Course teacher is :"+course.getTeacherName());
+        Log.d("getCourse", "Course room is :"+course.getClassRoom());
+        Log.d("getCourse", "Course day is :"+course.getDay());
+        Log.d("getCourse", "Course start is :"+course.getStart());
+        Log.d("getCourse", "Course end is :"+course.getEnd());
+        Log.d("getCourse", "Course weekNo is :"+course.getWeekNo());
     }
 }
