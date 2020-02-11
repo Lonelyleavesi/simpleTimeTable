@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.project.fragment.ShowAllCourseFragment;
 import com.project.fragment.TimeTableFragment;
 import com.project.item.Course;
 import com.project.tools.DebugHelper;
@@ -41,7 +42,6 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
         initSpinner();
         boundClickButtonToArray();
         boundButtonToListener();
-
         getSupportActionBar().hide();
     }
 
@@ -85,14 +85,37 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
         addCourseNoStart.setOnItemSelectedListener(this);
         addCourseNoEnd.setOnItemSelectedListener(this);
     }
+    /**
+     * spinner的监听器
+     * @param parent 用于区别点击的哪个spinner，通过parent.getId 对比
+     * @param view   无
+     * @param position 点击的item元素
+     * @param id    是你选中的某个Spinner中的某个下来值所在的行，一般自上而下从0开始，
+     */
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        switch (parent.getId()){
+            case R.id.spinner_addcourseNo_start:{
+                String str =parent.getItemAtPosition(position).toString();
+                addCourseNoEnd.setSelection(position,true);
+                courseStart = Integer.parseInt(str);
+            }break;
+            case R.id.spinner_addcourseNo_end:{
+                String str =parent.getItemAtPosition(position).toString();
+                courseEnd = Integer.parseInt(str);
+            }break;
+        }
+        Log.d("TimeTable", "onItemSelected: courseStart is " + courseStart + " courseEnd is "+courseEnd);
+    }
 
     private TableLayout clickWeekTableLayout;
     private ArrayList<ArrayList<Button>> weekButtonArray;
     private Boolean [][] weekButtonState;
     private ArrayList<Button> dayButtonArray;
     private Boolean [] dayButtonState;
+
     /**
-     * 将添加课程的周数储存在ArrayList中方便后续操作
+     * 将添加课程的周数Button的实例储存在ArrayList中方便后续操作
      */
     private void boundClickButtonToArray() {
         TableRow[] weeksRow = new TableRow[clickWeekTableLayout.getChildCount()];
@@ -291,6 +314,7 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
         submitCourse(courses);
         Toast.makeText(this,"添加课程成功",Toast.LENGTH_SHORT).show();
         TimeTableFragment.upDateTimeTable(TimeTableFragment.currentWeek);
+        ShowAllCourseFragment.updataCourseList();
         finish();
     }
 
@@ -388,27 +412,6 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    /**
-     * spinner的监听器
-     * @param parent 用于区别点击的哪个spinner，通过parent.getId 对比
-     * @param view   无
-     * @param position 点击的item元素
-     * @param id    是你选中的某个Spinner中的某个下来值所在的行，一般自上而下从0开始，
-     */
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        switch (parent.getId()){
-            case R.id.spinner_addcourseNo_start:{
-                String str =parent.getItemAtPosition(position).toString();
-                courseStart = Integer.parseInt(str);
-            }break;
-            case R.id.spinner_addcourseNo_end:{
-                String str =parent.getItemAtPosition(position).toString();
-                courseEnd = Integer.parseInt(str);
-            }break;
-        }
-        Log.d("TimeTable", "onItemSelected: courseStart is " + courseStart + " courseEnd is "+courseEnd);
-    }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
