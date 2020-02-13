@@ -32,8 +32,8 @@ public class DisplaySimpleCourseInfo extends AppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_simple_courseinfo);
         initMember();
-        boundListener();
         displayView();
+        boundListener();
         getSupportActionBar().hide();
     }
 
@@ -46,9 +46,6 @@ public class DisplaySimpleCourseInfo extends AppCompatActivity implements View.O
         lv_courseInfo = findViewById(R.id.listView_course_infos);
     }
 
-    private void boundListener() {
-        button_back.setOnClickListener(this);
-    }
 
     private void displayView(){
         displayCourseName();
@@ -83,6 +80,9 @@ public class DisplaySimpleCourseInfo extends AppCompatActivity implements View.O
         lv_courseInfo.setAdapter(coursesInfoAdapter);
     }
 
+    private void boundListener() {
+        button_back.setOnClickListener(this);
+    }
 
     @Override
     public void onClick(View v) {
