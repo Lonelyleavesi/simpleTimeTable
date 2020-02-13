@@ -117,8 +117,20 @@ public class ShowAllCourseFragment extends Fragment{
     }
 
     private void deleteCourse(final String courseName){
-        LitePal.deleteAll(Course.class,"name = ?",courseName);
-        updataCourseList();
-        TimeTableFragment.upDateTimeTable(TimeTableFragment.currentWeek);
+        ConfirmDialogFragment dialog = new ConfirmDialogFragment();
+        dialog.setContent("确认删除吗？");
+        dialog.setDialogClickListener(new ConfirmDialogFragment.onDialogClickListener() {
+            @Override
+            public void onSureClick() {
+                LitePal.deleteAll(Course.class,"name = ?",courseName);
+                updataCourseList();
+                TimeTableFragment.upDateTimeTable(TimeTableFragment.currentWeek);
+            }
+            @Override
+            public void onCancelClick() {
+            //这里是取消操作
+            }
+        });
+        dialog.show(getFragmentManager(),"");
     }
 }
