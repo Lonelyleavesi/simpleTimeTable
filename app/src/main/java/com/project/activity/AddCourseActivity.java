@@ -16,8 +16,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.project.fragment.ShowAllCourseFragment;
-import com.project.fragment.TimeTableFragment;
+import com.project.fragment.DispalyAllCourseFragment;
+import com.project.fragment.DisplayTimeTableFragment;
 import com.project.item.Course;
 import com.project.tools.DebugHelper;
 
@@ -29,9 +29,9 @@ import java.util.List;
 
 public class AddCourseActivity extends AppCompatActivity implements View.OnClickListener,CompoundButton.OnCheckedChangeListener, AdapterView.OnItemSelectedListener{
 
-    private EditText addCourseName;
-    private EditText addCourseTeacher;
-    private EditText addCourseRoom;
+    private EditText editAddCourseName;
+    private EditText editAddCourseTeacher;
+    private EditText editAddCourseRoom;
 
 
     @Override
@@ -49,12 +49,12 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
      * 初始化成员变量
      */
     private void initMember(){
-        addCourseName = (EditText) findViewById(R.id.edit_addCourse_name);
-        addCourseTeacher = (EditText) findViewById(R.id.edit_addCourse_teacherName);
-        addCourseRoom = (EditText)  findViewById(R.id.edit_addCourse_classRoom);
-        addCourseNoStart = (Spinner) findViewById(R.id.spinner_addcourseNo_start);
+        editAddCourseName = (EditText) findViewById(R.id.edit_addCourse_name);
+        editAddCourseTeacher = (EditText) findViewById(R.id.edit_addCourse_teacherName);
+        editAddCourseRoom = (EditText)  findViewById(R.id.edit_addCourse_classRoom);
+        spinnerAddCourseNoStart = (Spinner) findViewById(R.id.spinner_addcourseNo_start);
         courseStart = 0;
-        addCourseNoEnd = (Spinner) findViewById(R.id.spinner_addcourseNo_end);
+        spinnerAddCourseNoEnd = (Spinner) findViewById(R.id.spinner_addcourseNo_end);
         courseEnd = 0;
         weekButtonArray = new ArrayList<>();
         weekButtonState = new Boolean[5][5];
@@ -66,9 +66,9 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
         allWeekBox = (CheckBox) findViewById(R.id.checkBox_allweek);
     }
 
-    private Spinner  addCourseNoStart;
+    private Spinner spinnerAddCourseNoStart;
     private int courseStart;
-    private Spinner  addCourseNoEnd;
+    private Spinner spinnerAddCourseNoEnd;
     private int courseEnd;
     /**
      * 初始化Spinner （用于选第几节课）
@@ -80,10 +80,10 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,courseNo);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        addCourseNoStart.setAdapter(adapter);
-        addCourseNoEnd.setAdapter(adapter);
-        addCourseNoStart.setOnItemSelectedListener(this);
-        addCourseNoEnd.setOnItemSelectedListener(this);
+        spinnerAddCourseNoStart.setAdapter(adapter);
+        spinnerAddCourseNoEnd.setAdapter(adapter);
+        spinnerAddCourseNoStart.setOnItemSelectedListener(this);
+        spinnerAddCourseNoEnd.setOnItemSelectedListener(this);
     }
     /**
      * spinner的监听器
@@ -97,7 +97,7 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
         switch (parent.getId()){
             case R.id.spinner_addcourseNo_start:{
                 String str =parent.getItemAtPosition(position).toString();
-                addCourseNoEnd.setSelection(position,true);
+                spinnerAddCourseNoEnd.setSelection(position,true);
                 courseStart = Integer.parseInt(str);
             }break;
             case R.id.spinner_addcourseNo_end:{
@@ -268,7 +268,7 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
      * 根据当前的页面内容添加课程至数据库中,对于每一天，每一周都算一条数据。
      */
     private void addCourse(){
-        if (addCourseName.getText().toString().isEmpty()){
+        if (editAddCourseName.getText().toString().isEmpty()){
             Toast.makeText(this,"课程名不能为空",Toast.LENGTH_SHORT).show();
             return;
         }
@@ -294,9 +294,9 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
                             }
                             dayAndWeekIsEmpty = false;
                             Course course = new Course();
-                            course.setName(addCourseName.getText().toString());
-                            course.setTeacherName(addCourseTeacher.getText().toString());
-                            course.setClassRoom(addCourseRoom.getText().toString());
+                            course.setName(editAddCourseName.getText().toString());
+                            course.setTeacherName(editAddCourseTeacher.getText().toString());
+                            course.setClassRoom(editAddCourseRoom.getText().toString());
                             course.setDay(i+1);
                             course.setStart(courseStart);
                             course.setEnd(courseEnd);
@@ -313,8 +313,8 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
         //不存在冲突 则开始添加课程
         submitCourse(courses);
         Toast.makeText(this,"添加课程成功",Toast.LENGTH_SHORT).show();
-        TimeTableFragment.upDateTimeTable(TimeTableFragment.currentWeek);
-        ShowAllCourseFragment.updataCourseList();
+        DisplayTimeTableFragment.upDateTimeTable(DisplayTimeTableFragment.currentWeek);
+        DispalyAllCourseFragment.updataCourseList();
         finish();
     }
 

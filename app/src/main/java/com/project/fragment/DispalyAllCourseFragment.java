@@ -1,7 +1,6 @@
 package com.project.fragment;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -12,13 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.project.activity.MainActivity;
+import com.project.activity.DisplaySimpleCourseInfo;
 import com.project.activity.R;
 import com.project.item.Course;
 
@@ -29,18 +29,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class ShowAllCourseFragment extends Fragment{
-
-    private static List<String> allCourseName ;
-    private static ListView allCourseList;
-    private static ArrayAdapter <String> adapter;
-    private static Context showCourseContext;
+public class DispalyAllCourseFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.show_allcourse_fragment,container,false);
+        View view = inflater.inflate(R.layout.fragment_display_all_course,container,false);
         initMember(view);
+        setViewListener();
         updataCourseList();
         setListContextMenu();
         return view;
@@ -55,6 +51,31 @@ public class ShowAllCourseFragment extends Fragment{
         showCourseContext = getActivity();
     }
 
+
+    /**
+     * 为LIstview设置监听器，点击触发checkCourseInfo函数，切换页面和传递数据
+     */
+    private void setViewListener(){
+        allCourseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String name = allCourseName.get(position);
+                checkCourseInfo(name);
+            }
+        });
+    }
+
+    /**
+     * 开启某个课程的具体信息活动，并传递课程名称数据
+     * @param name 课程名称
+     */
+    private  void checkCourseInfo(String name){
+        Intent intent = new Intent(showCourseContext, DisplaySimpleCourseInfo.class);
+        intent.putExtra("courseName",name);
+        startActivity(intent);
+    }
+
+    private static List<String> allCourseName ;
     /**
      * 取得课程数据,从数据库出去，通过一个临时变量Set去重，然后再添加到list里面方便展示
      */
@@ -71,12 +92,17 @@ public class ShowAllCourseFragment extends Fragment{
         displayList();
     }
 
+
+    private  static ArrayAdapter <String> adapter;
+    private  static Context showCourseContext;
+    private  static ListView allCourseList;
     /**
      * 展示list中的内容，即所有课程的名称
      */
     private static void displayList(){
         adapter = new ArrayAdapter<String>(showCourseContext,android.R.layout.simple_list_item_1,allCourseName);
         allCourseList.setAdapter(adapter);
+
     }
 
     /**
@@ -106,8 +132,8 @@ public class ShowAllCourseFragment extends Fragment{
         Log.d("TimeTable", String.valueOf( menuInfo.position));
         Log.d("TimeTable", allCourseName.get(menuInfo.position));
         switch (item.getItemId()){
-            case R.id.menu_item_showCourse:{
-
+            case R.id.menu_item_infoCourse:{
+                checkCourseInfo(allCourseName.get(menuInfo.position));
             }break;
             case R.id.menu_item_deleteCourse:{
                 deleteCourse(allCourseName.get(menuInfo.position));
@@ -124,7 +150,7 @@ public class ShowAllCourseFragment extends Fragment{
             public void onSureClick() {
                 LitePal.deleteAll(Course.class,"name = ?",courseName);
                 updataCourseList();
-                TimeTableFragment.upDateTimeTable(TimeTableFragment.currentWeek);
+                DisplayTimeTableFragment.upDateTimeTable(DisplayTimeTableFragment.currentWeek);
             }
             @Override
             public void onCancelClick() {
@@ -133,4 +159,5 @@ public class ShowAllCourseFragment extends Fragment{
         });
         dialog.show(getFragmentManager(),"");
     }
+
 }

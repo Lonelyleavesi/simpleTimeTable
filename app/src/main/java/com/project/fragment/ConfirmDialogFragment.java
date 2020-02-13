@@ -24,12 +24,15 @@ public class ConfirmDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        mView = inflater.inflate(R.layout.confirm_dialog_fragment, container);
+        mView = inflater.inflate(R.layout.fragment_confirm_dialog, container);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         initView();
         return mView;
     }
 
+    /**
+     * 初始化View对象
+     */
     private void initView() {
         Button mTvSure = (Button) mView.findViewById(R.id.button_sure);
         Button mTvCancel = (Button) mView.findViewById(R.id.button_cancel);
@@ -59,6 +62,10 @@ public class ConfirmDialogFragment extends DialogFragment {
         this.content = content;
     }
 
+
+    /**
+     * 通过接口实现确认警告框点击逻辑
+     */
     public interface onDialogClickListener {
         public void onSureClick();
 

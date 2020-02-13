@@ -22,12 +22,12 @@ import org.litepal.LitePal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimeTableFragment extends Fragment implements AdapterView.OnItemSelectedListener{
+public class DisplayTimeTableFragment extends Fragment implements AdapterView.OnItemSelectedListener{
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-       View view = inflater.inflate(R.layout.table_fragment,container,false);
+       View view = inflater.inflate(R.layout.fragment_display_timetable,container,false);
        initMember(view);
        initCurrentSpinner();
        bindViewToArray();

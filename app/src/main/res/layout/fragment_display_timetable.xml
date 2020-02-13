@@ -44,11 +44,12 @@
             android:text="周" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/button_set_alarm"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:text="(未完成)为本周课程设置提醒"
             android:textAllCaps="false" />
     </LinearLayout>
 
@@ -147,7 +148,7 @@
     </LinearLayout>
 
     <include
-        layout="@layout/coursetables"
+        layout="@layout/layout_coursetables"
         />
 
 </LinearLayout>

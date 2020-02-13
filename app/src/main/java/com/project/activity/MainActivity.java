@@ -11,8 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.project.fragment.ShowAllCourseFragment;
-import com.project.fragment.TimeTableFragment;
+import com.project.fragment.DispalyAllCourseFragment;
+import com.project.fragment.DisplayTimeTableFragment;
 
 import org.litepal.LitePal;
 
@@ -24,15 +24,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         initMember();
         boundButtonToListener();
-        replaceFragment(new TimeTableFragment());
+        replaceFragment(new DisplayTimeTableFragment());
         LitePal.getDatabase();
         getSupportActionBar().hide();
     }
 
     private void initMember(){
-        timeTableFragment = new TimeTableFragment();
+        displayTimeTableFragment = new DisplayTimeTableFragment();
         addCourseActivity = new Intent(MainActivity.this, AddCourseActivity.class);
-        showAllCourseFragment = new ShowAllCourseFragment();
+        dispalyAllCourseFragment = new DispalyAllCourseFragment();
     }
 
     /**
@@ -61,9 +61,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    TimeTableFragment timeTableFragment;
+    DisplayTimeTableFragment displayTimeTableFragment;
     Intent addCourseActivity;
-    ShowAllCourseFragment showAllCourseFragment;
+    DispalyAllCourseFragment dispalyAllCourseFragment;
     /**
      * 设置按钮的监听器
      * @author chen yujie
@@ -73,13 +73,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.button_displaytable:{
-                replaceFragment(timeTableFragment);
+                replaceFragment(displayTimeTableFragment);
             }break;
             case R.id.button_addCourse:{
                 startActivity(addCourseActivity);
             }break;
             case R.id.button_showAllCourse:{
-                replaceFragment(showAllCourseFragment);
+                replaceFragment(dispalyAllCourseFragment);
             }break;
         }
     }
