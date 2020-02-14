@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="#CC009688" />
+
+    <TableLayout
+        android:id="@+id/tableLayout_clickweek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/button_addcourse_week1"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/button_addcourse_week2"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/button_addcourse_week3"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/button_addcourse_week4"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/button_addcourse_week5"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/button_addcourse_week6"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/button_addcourse_week7"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/button_addcourse_week8"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/button_addcourse_week9"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/button_addcourse_week10"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/button_addcourse_week11"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/button_addcourse_week12"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/button_addcourse_week13"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/button_addcourse_week14"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/button_addcourse_week15"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/button_addcourse_week16"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/button_addcourse_week17"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/button_addcourse_week18"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/button_addcourse_week19"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/button_addcourse_week20"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/button_addcourse_week21"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/button_addcourse_week22"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/button_addcourse_week23"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/button_addcourse_week24"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/button_addcourse_week25"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/addcourse_weekbutton_unclicked"
+                android:text="Button" />
+        </TableRow>
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#00A75B5B"
+        android:gravity="center"
+        android:orientation="horizontal"
+        tools:background="@drawable/addcourse_weekbutton_unclicked">
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5" />
+
+        <CheckBox
+            android:id="@+id/checkBox_oddweek"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="单周" />
+
+        <CheckBox
+            android:id="@+id/checkBox_evenweek"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="双周" />
+
+        <CheckBox
+            android:id="@+id/checkBox_allweek"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="全选" />
+
+        <Button
+            android:id="@+id/button_confirm_week"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="确定" />
+
+    </LinearLayout>
+
+</LinearLayout>

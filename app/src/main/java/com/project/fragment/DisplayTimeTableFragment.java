@@ -93,7 +93,6 @@ public class DisplayTimeTableFragment extends Fragment implements AdapterView.On
         clearTimeTable();
         List<Course> cours = LitePal.where("weekNo = ?",week+"").find(Course.class);
         for (Course course : cours){
-            DebugHelper.showCourse(course);
             int day = course.getDay();
             int start = course.getStart();
             int end = course.getEnd();

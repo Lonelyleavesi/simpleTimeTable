@@ -37,7 +37,7 @@ public class DispalyAllCourseFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_display_all_course,container,false);
         initMember(view);
         setViewListener();
-        updataCourseList();
+        updateCourseList();
         setListContextMenu();
         return view;
     }
@@ -49,6 +49,7 @@ public class DispalyAllCourseFragment extends Fragment {
         allCourseName = new ArrayList<>();
         allCourseList = view.findViewById(R.id.listview_showAllCourse);
         showCourseContext = getActivity();
+        adapter = new ArrayAdapter<String>(showCourseContext,android.R.layout.simple_list_item_1,allCourseName);
     }
 
 
@@ -75,11 +76,11 @@ public class DispalyAllCourseFragment extends Fragment {
         startActivity(intent);
     }
 
-    private static List<String> allCourseName ;
+    private static List<String> allCourseName = new ArrayList<>();
     /**
      * 取得课程数据,从数据库出去，通过一个临时变量Set去重，然后再添加到list里面方便展示
      */
-    public static void updataCourseList(){
+    public static void updateCourseList(){
         List <Course> courses = LitePal.select("name").find(Course.class);
         Set<String> courseName = new TreeSet<>();
         allCourseName.clear();
@@ -93,16 +94,16 @@ public class DispalyAllCourseFragment extends Fragment {
     }
 
 
-    private  static ArrayAdapter <String> adapter;
+    private  static ArrayAdapter <String> adapter ;
     private  static Context showCourseContext;
     private  static ListView allCourseList;
     /**
      * 展示list中的内容，即所有课程的名称
      */
     private static void displayList(){
-        adapter = new ArrayAdapter<String>(showCourseContext,android.R.layout.simple_list_item_1,allCourseName);
+        if (adapter == null)
+            return;
         allCourseList.setAdapter(adapter);
-
     }
 
     /**
@@ -149,7 +150,7 @@ public class DispalyAllCourseFragment extends Fragment {
             @Override
             public void onSureClick() {
                 LitePal.deleteAll(Course.class,"name = ?",courseName);
-                updataCourseList();
+                updateCourseList();
                 DisplayTimeTableFragment.upDateTimeTable(DisplayTimeTableFragment.currentWeek);
             }
             @Override
