@@ -28,7 +28,6 @@ import org.litepal.LitePal;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class DisplaySimpleCourseInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button button_back;
@@ -43,7 +42,6 @@ public class DisplaySimpleCourseInfoActivity extends AppCompatActivity implement
         getSupportActionBar().hide();
     }
 
-
     private void initMember(){
         Intent intent = getIntent();
         courseSimpleInfos = new ArrayList<>();
@@ -51,23 +49,32 @@ public class DisplaySimpleCourseInfoActivity extends AppCompatActivity implement
         tv_courseName=findViewById(R.id.textView_simple_course_Name);
         button_back = findViewById(R.id.button_infocourse_back);
         lv_courseInfo = findViewById(R.id.listView_course_infos);
+        coursesInfoAdapter = new CoursesInfoAdapter(this,R.layout.item_coursetime_in_courseinfo,courseSimpleInfos);
     }
 
-
+    /**
+     * 展示页面，包括标题以及下面的listView
+     */
     private void displayView(){
         displayCourseName();
         displayListView();
     }
 
     TextView tv_courseName;
-    String str_courseName;
+    static String str_courseName;
     private void displayCourseName() {
         tv_courseName.setText(str_courseName);
     }
 
-    ListView lv_courseInfo;
-    List<CourseSimpleInfo> courseSimpleInfos;
-    private void displayListView() {
+    static ListView lv_courseInfo;
+    static List<CourseSimpleInfo> courseSimpleInfos;
+    static CoursesInfoAdapter coursesInfoAdapter;
+    /**
+     * 展示listView，先根据课程名查找出所有Course对象，然后封装成CourseInfo对象，然后加入list展示
+     */
+    public static void displayListView() {
+        if (courseSimpleInfos == null ||  str_courseName == null || lv_courseInfo == null)
+            return ;
         courseSimpleInfos.clear();
         List<Course>  courses = LitePal.where("name = ?",str_courseName).find(Course.class);
         if (courses.size() == 0)
@@ -85,12 +92,19 @@ public class DisplaySimpleCourseInfoActivity extends AppCompatActivity implement
             }
         }
         courseSimpleInfos.add(tempInfo);
-        CoursesInfoAdapter coursesInfoAdapter = new CoursesInfoAdapter(this,R.layout.item_coursetime_in_courseinfo,courseSimpleInfos);
         lv_courseInfo.setAdapter(coursesInfoAdapter);
     }
 
     private void boundListener() {
         button_back.setOnClickListener(this);
+        lv_courseInfo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                CourseSimpleInfo info = courseSimpleInfos.get(position);
+                Intent intent = getModifyIntent(info);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -127,12 +141,9 @@ public class DisplaySimpleCourseInfoActivity extends AppCompatActivity implement
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo menuInfo=(AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         CourseSimpleInfo info = courseSimpleInfos.get(menuInfo.position);
-        Log.d("TimeTable", String.valueOf( menuInfo.position));
-        Log.d("TimeTable","You have just check day "+ info.getDay());
         switch (item.getItemId()){
             case R.id.menu_item_modifyCourseInfo:{
-                Log.d("TimeTable","You Check modify course...");
-                Intent intent = new Intent(this,ModifyCourseInfoActivity.class);
+                Intent intent = getModifyIntent(info);
                 startActivity(intent);
             }break;
             case R.id.menu_item_deleteCourseInfo:{
@@ -143,5 +154,26 @@ public class DisplaySimpleCourseInfoActivity extends AppCompatActivity implement
             }break;
         }
         return true;
+    }
+
+    /**
+     * 进入修改课程信息页面时传递数据，其中week通过 ， 符号将所有week连成一个字符串
+     * @param info  需要进行修改的数据，即课程的部分信息
+     * @return  进入修改页面的intent对象
+     */
+    private Intent getModifyIntent(CourseSimpleInfo info){
+        Intent intent = new Intent(this,ModifyCourseInfoActivity.class);
+        intent.putExtra("courseName",str_courseName);
+        intent.putExtra("day",info.getDay());
+        intent.putExtra("courseStart",info.getCourseStart().toString());
+        intent.putExtra("courseEnd",info.getCourseEnd().toString());
+        intent.putExtra("courseRoom",info.getCourseRoom());
+        intent.putExtra("teacher",info.getTeacherName());
+        StringBuffer sb = new StringBuffer();
+        for(Integer week : info.getWeeks()){
+            sb.append(week.toString()+",");
+        }
+        intent.putExtra("weeks",sb.toString());
+        return intent;
     }
 }

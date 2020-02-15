@@ -12,6 +12,19 @@ public class Course extends LitePalSupport {
     private int end_time;        //结束课程时间
     private int weekNo;    //第几周
 
+    public Course() {
+    }
+
+    public Course(String name, String teacherName, String classRoom, int day, int start_time, int end_time, int weekNo) {
+        this.name = name;
+        this.teacherName = teacherName;
+        this.classRoom = classRoom;
+        this.day = day;
+        this.start_time = start_time;
+        this.end_time = end_time;
+        this.weekNo = weekNo;
+    }
+
     public int getId() {
         return id;
     }
@@ -66,5 +79,22 @@ public class Course extends LitePalSupport {
 
     public void setEnd_time(int end_time) {
         this.end_time = end_time;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Course course = (Course) o;
+        if (id != course.id) return false;
+        if (day != course.day) return false;
+        if (start_time != course.start_time) return false;
+        if (end_time != course.end_time) return false;
+        if (weekNo != course.weekNo) return false;
+        if (!name.equals(course.name)) return false;
+        if (teacherName != null ? !teacherName.equals(course.teacherName) : course.teacherName != null)
+            return false;
+        return classRoom != null ? classRoom.equals(course.classRoom) : course.classRoom == null;
     }
 }
