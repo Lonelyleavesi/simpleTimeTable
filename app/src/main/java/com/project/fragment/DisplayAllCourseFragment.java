@@ -11,14 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.project.activity.DisplaySimpleCourseInfo;
+import com.project.activity.DisplaySimpleCourseInfoActivity;
 import com.project.activity.R;
 import com.project.item.Course;
 
@@ -29,7 +28,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class DispalyAllCourseFragment extends Fragment {
+public class DisplayAllCourseFragment extends Fragment {
 
     @Nullable
     @Override
@@ -71,7 +70,7 @@ public class DispalyAllCourseFragment extends Fragment {
      * @param name 课程名称
      */
     private  void checkCourseInfo(String name){
-        Intent intent = new Intent(showCourseContext, DisplaySimpleCourseInfo.class);
+        Intent intent = new Intent(showCourseContext, DisplaySimpleCourseInfoActivity.class);
         intent.putExtra("courseName",name);
         startActivity(intent);
     }

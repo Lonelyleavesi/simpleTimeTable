@@ -91,14 +91,22 @@ public class DisplayTimeTableFragment extends Fragment implements AdapterView.On
      */
     public static void upDateTimeTable( int week){
         clearTimeTable();
-        List<Course> cours = LitePal.where("weekNo = ?",week+"").find(Course.class);
+        LitePal.getDatabase();
+        List<Course> cours;
+        if(LitePal.isExist(Course.class)){
+            cours = LitePal.where("weekNo = ?",week+"").find(Course.class);
+        }else
+        {
+            return ;
+        }
         for (Course course : cours){
             int day = course.getDay();
-            int start = course.getStart();
-            int end = course.getEnd();
+            int start = course.getStart_time();
+            int end = course.getEnd_time();
+            String courseRoom = course.getClassRoom();
             for (int i =start ; i <= end ; i++)
             {
-                setCourseTableItem(course.getName(),i,day);
+                setCourseTableItem(course.getName(),i,day,courseRoom);
             }
         }
     }
@@ -122,9 +130,9 @@ public class DisplayTimeTableFragment extends Fragment implements AdapterView.On
      * @param no   上课的序号
      * @param day  星期几
      */
-    private static void setCourseTableItem(String courseName, int no, int day){
+    private static void setCourseTableItem(String courseName, int no, int day,String courseRoom){
         TextView temp = courseArray.get(no-1).get(day);
-        temp.setText(courseName);
+        temp.setText(courseName+"\n"+courseRoom);
         temp.setBackgroundResource(R.drawable.coursetable_courseitem_border);
     }
 

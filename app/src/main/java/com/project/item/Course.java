@@ -8,8 +8,8 @@ public class Course extends LitePalSupport {
     private String teacherName; //任课教师名称
     private String classRoom; //教室名称
     private int day;       //星期几
-    private int start;        //开始课程时间
-    private int end;        //结束课程时间
+    private int start_time;        //开始课程时间
+    private int end_time;        //结束课程时间
     private int weekNo;    //第几周
 
     public int getId() {
@@ -52,19 +52,19 @@ public class Course extends LitePalSupport {
         this.day = day;
     }
 
-    public int getStart() {
-        return start;
+    public int getStart_time() {
+        return start_time;
     }
 
-    public int getEnd() {
-        return end;
+    public void setStart_time(int start_time) {
+        this.start_time = start_time;
     }
 
-    public void setEnd(int end) {
-        this.end = end;
+    public int getEnd_time() {
+        return end_time;
     }
 
-    public void setStart(int start) {
-        this.start = start;
+    public void setEnd_time(int end_time) {
+        this.end_time = end_time;
     }
 }

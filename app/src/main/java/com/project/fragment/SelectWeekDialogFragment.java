@@ -52,10 +52,6 @@ public class SelectWeekDialogFragment extends DialogFragment  implements View.On
         return fragment_view;
     }
 
-    private TableLayout clickWeekTableLayout;
-    private ArrayList<ArrayList<Button>> weekButtonArray;
-    private Boolean [][] weekButtonState;
-    public Set<Integer> weeksSelected;
     /**
      * 初始化成员变量
      */
@@ -83,6 +79,10 @@ public class SelectWeekDialogFragment extends DialogFragment  implements View.On
         }
         updateButtonState();
     }
+
+    private TableLayout clickWeekTableLayout;
+    private ArrayList<ArrayList<Button>> weekButtonArray;
+    private Boolean [][] weekButtonState;
     /**
      * 将添加课程的周数Button的实例储存在ArrayList中方便后续操作
      */
@@ -260,6 +260,7 @@ public class SelectWeekDialogFragment extends DialogFragment  implements View.On
         }
     }
 
+    public Set<Integer> weeksSelected;
     public void getSelectWeek(){
         for (int m = 0 ; m < weekButtonState.length; m ++)
             for (int n = 0; n < weekButtonState[m].length ; n++){

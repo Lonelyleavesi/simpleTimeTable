@@ -56,14 +56,17 @@ public class SelectDayAndNoDialogFragment extends DialogFragment implements  Ada
      * 初始化成员变量
      */
     private void initMember(View view){
+
         if(daySelected == null)
             daySelected = new TreeSet<>();
         spinnerAddCourseNoStart = (Spinner) view.findViewById(R.id.spinner_addcourseNo_start);
         spinnerAddCourseNoEnd = (Spinner) view.findViewById(R.id.spinner_addcourseNo_end);
+        initSpinner();
         dayButtonArray = new ArrayList<>();
         dayButtonState = new Boolean[7];
         button_confirm_day_and_no = (Button) view.findViewById(R.id.button_confirm_dayAndNo);
-        initSpinner();
+        spinnerAddCourseNoStart.setSelection(courseStart-1,true);
+        spinnerAddCourseNoEnd.setSelection(courseEnd-1,true);
         setDayButtonState();
     }
 

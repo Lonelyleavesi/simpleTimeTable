@@ -1,22 +1,15 @@
 package com.project.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.project.fragment.DispalyAllCourseFragment;
+import com.project.fragment.ConfirmDialogFragment;
+import com.project.fragment.DisplayAllCourseFragment;
 import com.project.fragment.DisplayTimeTableFragment;
 import com.project.fragment.SelectDayAndNoDialogFragment;
 import com.project.fragment.SelectWeekDialogFragment;
@@ -33,15 +26,10 @@ import java.util.TreeSet;
 
 public class AddCourseActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private EditText editAddCourseName;
-    private EditText editAddCourseTeacher;
-    private EditText editAddCourseRoom;
-    Button buttonSelectWeeks;
-    Button getButtonSelectDayAndNo;
-    Set<Integer> weekSelected;
-    int courseEnd;
-    int courseStart;
-    Set<Integer> daySelected;
+    protected EditText editAddCourseName;
+    protected EditText editAddCourseTeacher;
+    protected EditText editAddCourseRoom;
+    protected Button getButtonSelectDayAndNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +43,7 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
     /**
      * 初始化成员变量
      */
-    private void initMember(){
+    protected void initMember(){
         weekSelected = new TreeSet<>();
         daySelected = new TreeSet<>();
         editAddCourseName = (EditText) findViewById(R.id.edit_addCourse_name);
@@ -73,7 +61,7 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
      * 为所有按钮添加或绑定监听器
      * @author chen yujie
      */
-    private void boundButtonToListener(){
+    protected void boundButtonToListener(){
         Button backButton =  (Button) findViewById(R.id.button_addcourse_back);
         backButton.setOnClickListener(this);
         Button finishButton = (Button)findViewById(R.id.button_addcourse_finish);
@@ -83,7 +71,10 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
     }
 
 
-
+    protected int courseEnd;
+    protected int courseStart;
+    protected Set<Integer> daySelected;
+    protected Set<Integer> weekSelected;
     /**
      * 如果为返回按钮则返回，如果为添加课程按钮则添加课程
      * @param v  被点击的按钮对象
@@ -92,7 +83,19 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.button_addcourse_back:{
-                    finish();
+                ConfirmDialogFragment dialog = new ConfirmDialogFragment();
+                dialog.setContent("确认放弃添加课程吗？");
+                dialog.setDialogClickListener(new ConfirmDialogFragment.onDialogClickListener() {
+                    @Override
+                    public void onSureClick() {
+                        finish();
+                    }
+                    @Override
+                    public void onCancelClick() {
+                        //这里是取消操作
+                    }
+                });
+                dialog.show(getSupportFragmentManager(),"");
             }break;
             case R.id.button_addcourse_finish:{
                 addCourse();
@@ -135,7 +138,7 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
     /**
      * 根据当前的页面内容添加课程至数据库中,对于每一天，每一周都算一条数据。
      */
-    private void addCourse(){
+    protected void addCourse(){
         if (editAddCourseName.getText().toString().isEmpty()){
             Toast.makeText(this,"课程名不能为空",Toast.LENGTH_SHORT).show();
             return;
@@ -163,8 +166,8 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
                 course.setTeacherName(editAddCourseTeacher.getText().toString());
                 course.setClassRoom(editAddCourseRoom.getText().toString());
                 course.setDay(day);
-                course.setStart(courseStart);
-                course.setEnd(courseEnd);
+                course.setStart_time(courseStart);
+                course.setEnd_time(courseEnd);
                 course.setWeekNo(week);
                 courses.add(course);
                 DebugHelper.showCourse(course);
@@ -173,7 +176,7 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
         submitCourse(courses);
         Toast.makeText(this,"添加课程成功",Toast.LENGTH_SHORT).show();
         DisplayTimeTableFragment.upDateTimeTable(DisplayTimeTableFragment.currentWeek);
-        DispalyAllCourseFragment.updateCourseList();
+        DisplayAllCourseFragment.updateCourseList();
         finish();
     }
 
@@ -181,11 +184,11 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
      *传入周数，天数，上课的开始以及结束，检查是否已经有课与新添加的课程冲突
      * @return
      */
-    private boolean haveConflict(int week, int day, int start,int end){
+    protected boolean haveConflict(int week, int day, int start,int end){
         List<Course> courses = LitePal.where("weekNo = ? and day = ?", week+"",day+"").find(Course.class);
         for (Course course : courses){
             DebugHelper.showCourse(course);
-            if (!(course.getStart()> end || course.getEnd() < start))
+            if (!(course.getStart_time()> end || course.getEnd_time() < start))
             {
                 return true;
             }
@@ -199,7 +202,8 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    private void updateSelectWeekButton(){
+    protected Button buttonSelectWeeks;
+    protected void updateSelectWeekButton(){
         StringBuffer sb = new StringBuffer("周数: ");
         for (Integer week : weekSelected)
         {
@@ -208,13 +212,30 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
         buttonSelectWeeks.setText(sb.toString());
     }
 
-    private void updateSelectDayAndNoButton(){
+    protected void updateSelectDayAndNoButton(){
         StringBuffer sb = new StringBuffer("节数: 星期(");
         for (Integer day : daySelected){
             sb.append( day+" ");
         }
         sb.append(")；第").append(courseStart).append("至").append(courseEnd).append("节课");
         getButtonSelectDayAndNo.setText(sb.toString());
+    }
+
+    @Override
+    public void onBackPressed() {
+        ConfirmDialogFragment dialog = new ConfirmDialogFragment();
+        dialog.setContent("确认放弃添加课程吗？");
+        dialog.setDialogClickListener(new ConfirmDialogFragment.onDialogClickListener() {
+            @Override
+            public void onSureClick() {
+                finish();
+            }
+            @Override
+            public void onCancelClick() {
+                //这里是取消操作
+            }
+        });
+        dialog.show(getSupportFragmentManager(),"");
     }
 
 }

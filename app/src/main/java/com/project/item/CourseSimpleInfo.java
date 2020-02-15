@@ -9,8 +9,8 @@ import java.util.TreeSet;
 public class CourseSimpleInfo {
     public CourseSimpleInfo(Course course) {
         this.day = course.getDay()+"";
-        this.courseStart = course.getStart();
-        this.courseEnd = course.getEnd();
+        this.courseStart = course.getStart_time();
+        this.courseEnd = course.getEnd_time();
         this.teacherName = course.getTeacherName();
         this.courseRoom = course.getClassRoom();
         weeks = new TreeSet<>();

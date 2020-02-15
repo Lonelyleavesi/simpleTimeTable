@@ -11,10 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.project.fragment.DispalyAllCourseFragment;
+import com.project.fragment.DisplayAllCourseFragment;
 import com.project.fragment.DisplayTimeTableFragment;
-
-import org.litepal.LitePal;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -25,14 +23,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initMember();
         boundButtonToListener();
         replaceFragment(new DisplayTimeTableFragment());
-        LitePal.getDatabase();
         getSupportActionBar().hide();
     }
 
     private void initMember(){
         displayTimeTableFragment = new DisplayTimeTableFragment();
         addCourseActivity = new Intent(MainActivity.this, AddCourseActivity.class);
-        dispalyAllCourseFragment = new DispalyAllCourseFragment();
+        displayAllCourseFragment = new DisplayAllCourseFragment();
     }
 
     /**
@@ -63,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     DisplayTimeTableFragment displayTimeTableFragment;
     Intent addCourseActivity;
-    DispalyAllCourseFragment dispalyAllCourseFragment;
+    DisplayAllCourseFragment displayAllCourseFragment;
     /**
      * 设置按钮的监听器
      * @author chen yujie
@@ -79,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(addCourseActivity);
             }break;
             case R.id.button_showAllCourse:{
-                replaceFragment(dispalyAllCourseFragment);
+                replaceFragment(displayAllCourseFragment);
             }break;
         }
     }
