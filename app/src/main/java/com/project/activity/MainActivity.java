@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.project.fragment.DisplayAllCourseFragment;
 import com.project.fragment.DisplayTimeTableFragment;
+import com.project.fragment.SetInterfaceFragment;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         displayTimeTableFragment = new DisplayTimeTableFragment();
         addCourseActivity = new Intent(MainActivity.this, AddCourseActivity.class);
         displayAllCourseFragment = new DisplayAllCourseFragment();
+        setInterfaceFragment = new SetInterfaceFragment();
     }
 
     /**
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         addCourse.setOnClickListener(this);
         Button showAllCourses = (Button) findViewById(R.id.button_showAllCourse);
         showAllCourses.setOnClickListener(this);
+        Button setInterface = (Button) findViewById(R.id.button_setInterface);
+        setInterface.setOnClickListener(this);
     }
 
     /**
@@ -61,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     DisplayTimeTableFragment displayTimeTableFragment;
     Intent addCourseActivity;
     DisplayAllCourseFragment displayAllCourseFragment;
+    SetInterfaceFragment setInterfaceFragment;
     /**
      * 设置按钮的监听器
      * @author chen yujie
@@ -78,6 +83,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_showAllCourse:{
                 replaceFragment(displayAllCourseFragment);
             }break;
+            case R.id.button_setInterface:{
+                replaceFragment(setInterfaceFragment);
+            }
         }
     }
 
