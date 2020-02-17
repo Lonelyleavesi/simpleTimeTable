@@ -67,10 +67,24 @@
             android:layout_weight="3" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView23"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="设置各节课开始和结束的时间，默认都是0点0分" />
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycle_setClassesTime"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="320dp"
         android:minHeight="320dp" />
 
     <LinearLayout
@@ -85,7 +99,7 @@
             android:layout_weight="8" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/button_set_confirm"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
