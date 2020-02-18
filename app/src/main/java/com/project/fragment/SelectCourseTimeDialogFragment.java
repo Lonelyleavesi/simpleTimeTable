@@ -16,7 +16,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.project.activity.R;
+import com.project.tools.CustomTime;
 
+/**
+ * @author  chen yujie
+ */
 public class SelectCourseTimeDialogFragment extends DialogFragment implements View.OnClickListener {
     View fragment_view;
 
@@ -42,15 +46,14 @@ public class SelectCourseTimeDialogFragment extends DialogFragment implements Vi
 
     TimePicker timePicker ;
     Button button_confirm;
-    public int m_hour;
-    public int m_minute;
+    public CustomTime m_time;
     @TargetApi(Build.VERSION_CODES.M)
     private void initView( ) {
         timePicker =  fragment_view.findViewById(R.id.timepicker_courseTime_dialog);
         timePicker.setIs24HourView(true);
         button_confirm = fragment_view.findViewById(R.id.button_timePickConfirm);
-        timePicker.setHour(m_hour);
-        timePicker.setMinute(m_minute);
+        timePicker.setHour(m_time.getHour());
+        timePicker.setMinute(m_time.getMinute());
     }
 
     private void boundListener() {
@@ -58,8 +61,8 @@ public class SelectCourseTimeDialogFragment extends DialogFragment implements Vi
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                m_hour = hourOfDay;
-                m_minute = minute;
+                m_time.setHour(hourOfDay);
+                m_time.setMinute(minute);
             }
         });
     }

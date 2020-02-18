@@ -15,14 +15,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.project.activity.R;
 import com.project.fragment.SelectCourseTimeDialogFragment;
 import com.project.item.CourseTime;
+import com.project.tools.CustomTime;
 
 import java.util.List;
 
+/**
+ * @author  chen yujie
+ */
 public class SetCourseTimeAdapter extends RecyclerView.Adapter<SetCourseTimeAdapter.ViewHolder> {
 
     private List<CourseTime>  courseTimeList;
     private Context context;
     private FragmentManager manager;
+    private final int TIME_OF_ONE_COURSE = 45;
     static class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView tvCourseNo;
@@ -47,18 +52,15 @@ public class SetCourseTimeAdapter extends RecyclerView.Adapter<SetCourseTimeAdap
         final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_set_class_time,parent,false);
         ViewHolder holder = new ViewHolder(view);
         manager = ((AppCompatActivity)context).getSupportFragmentManager();
-
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final CourseTime courseTime = courseTimeList.get(position);
-
         holder.tvCourseNo.setText("第"+courseTime.getNo()+"节课");
-        holder.buttonCourseStartTime.setText(formatTime(courseTime.getStart_hour())+":"+formatTime(courseTime.getStart_minute()));
-        holder.buttonCourseEndTime.setText(formatTime(courseTime.getEnd_hour())+":"+formatTime(courseTime.getEnd_minute()));
-
+        holder.buttonCourseStartTime.setText(courseTime.start_time.formatTime());
+        holder.buttonCourseEndTime.setText(courseTime.end_time.formatTime());
         holder.buttonCourseStartTime.setOnClickListener(new View.OnClickListener() {
             /**
              * 先将设置前的时间传入到dialog之中，点击确定后再将dialog中设置的时间传出来
@@ -66,14 +68,16 @@ public class SetCourseTimeAdapter extends RecyclerView.Adapter<SetCourseTimeAdap
             @Override
             public void onClick(View v) {
                 final SelectCourseTimeDialogFragment courseTimeDialogFragment = new SelectCourseTimeDialogFragment();
-                courseTimeDialogFragment.m_hour = courseTime.getStart_hour();
-                courseTimeDialogFragment.m_hour = courseTime.getStart_hour();
+                courseTimeDialogFragment.m_time = courseTime.start_time;
                 courseTimeDialogFragment.setDialogClickListener(new SelectCourseTimeDialogFragment.SelectTimeClickListener() {
                     @Override
                     public void onSureClick() {
-                        courseTime.setStart_hour(courseTimeDialogFragment.m_hour);
-                        courseTime.setStart_minute(courseTimeDialogFragment.m_minute);
-                        holder.buttonCourseStartTime.setText(formatTime(courseTime.getStart_hour())+":"+formatTime(courseTime.getStart_minute()));
+                        courseTime.start_time = courseTimeDialogFragment.m_time;
+                        holder.buttonCourseStartTime.setText(courseTime.start_time.formatTime());
+                        courseTime.end_time = new CustomTime(courseTime.start_time);
+                        courseTime.end_time.addMinute(TIME_OF_ONE_COURSE);
+                        holder.buttonCourseEndTime.setText(courseTime.end_time.formatTime());
+
                     }
                 });
                 courseTimeDialogFragment.show(manager,"");
@@ -83,12 +87,12 @@ public class SetCourseTimeAdapter extends RecyclerView.Adapter<SetCourseTimeAdap
             @Override
             public void onClick(View v) {
                 final SelectCourseTimeDialogFragment courseTimeDialogFragment = new SelectCourseTimeDialogFragment();
+                courseTimeDialogFragment.m_time = courseTime.end_time;
                 courseTimeDialogFragment.setDialogClickListener(new SelectCourseTimeDialogFragment.SelectTimeClickListener() {
                     @Override
                     public void onSureClick() {
-                        courseTime.setEnd_hour(courseTimeDialogFragment.m_hour);
-                        courseTime.setEnd_minute(courseTimeDialogFragment.m_minute);
-                        holder.buttonCourseEndTime.setText(formatTime(courseTime.getEnd_hour())+":"+formatTime(courseTime.getEnd_minute()));
+                        courseTime.end_time = courseTimeDialogFragment.m_time;
+                        holder.buttonCourseEndTime.setText(courseTime.end_time.formatTime());
                     }
                 });
                 courseTimeDialogFragment.show(manager,"");
@@ -96,18 +100,7 @@ public class SetCourseTimeAdapter extends RecyclerView.Adapter<SetCourseTimeAdap
         });
     }
 
-    /**
-     * 如果时间小于10 比如 5 ，则改成05
-     * @param n  输入的数字
-     * @return   返回字符串
-     */
-    private String formatTime(Integer n){
-        String re = n.toString();
-        if (n < 10){
-            re = "0"+re;
-        }
-        return re;
-    }
+
     @Override
     public int getItemCount() {
         return courseTimeList.size();

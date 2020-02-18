@@ -5,13 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.project.fragment.ConfirmDialogFragment;
 import com.project.item.Course;
-import com.project.tools.DataBaseCostumTools;
-
-import org.litepal.LitePal;
+import com.project.tools.DataBaseCustomTools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,7 +106,7 @@ public class ModifyCourseInfoActivity extends AddCourseActivity {
     protected boolean addCourse() {
         for (Course deleteCourse : deletedCourse)
         {
-            DataBaseCostumTools.deleteExistCourse(deleteCourse);
+            DataBaseCustomTools.deleteExistCourse(deleteCourse);
         }
        if( !super.addCourse()){
            for (Course deleteCourse : deletedCourse)

@@ -1,22 +1,20 @@
 package com.project.item;
 
 
+import com.project.tools.CustomTime;
+
 /**
  * 用于储存设置页面中 第x节课的开始时间和结束时间的item
  */
-public class CourseTime {
+public class CourseTime implements Comparable{
     int no; //序号
-    int start_hour;
-    int start_minute;
-    int end_hour;
-    int end_minute;
+    public CustomTime start_time;
+    public CustomTime end_time;
 
     public  CourseTime(){
         no = 0;
-        start_hour = 0 ;
-        start_minute = 0;
-        end_hour = 0;
-        end_minute = 0 ;
+        start_time = new CustomTime();
+        end_time = new CustomTime();
     }
     public int getNo() {
         return no;
@@ -26,35 +24,17 @@ public class CourseTime {
         this.no = no;
     }
 
-    public int getStart_hour() {
-        return start_hour;
+    @Override
+    public String toString() {
+        return no+","+start_time.toString()+","+end_time.toString();
     }
 
-    public void setStart_hour(int start_hour) {
-        this.start_hour = start_hour;
-    }
-
-    public int getStart_minute() {
-        return start_minute;
-    }
-
-    public void setStart_minute(int start_minute) {
-        this.start_minute = start_minute;
-    }
-
-    public int getEnd_hour() {
-        return end_hour;
-    }
-
-    public void setEnd_hour(int end_hour) {
-        this.end_hour = end_hour;
-    }
-
-    public int getEnd_minute() {
-        return end_minute;
-    }
-
-    public void setEnd_minute(int end_minute) {
-        this.end_minute = end_minute;
+    @Override
+    public int compareTo(Object o) {
+        CourseTime s = (CourseTime) o;
+        if (this.no >= s.no)
+            return 1;
+        else
+            return 0;
     }
 }

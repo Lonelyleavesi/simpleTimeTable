@@ -65,6 +65,7 @@ public class DisplayTimeTableFragment extends Fragment implements AdapterView.On
 
     private TableLayout courseTable;
     public static ArrayList<ArrayList<TextView>>  courseArray;
+
     /**
      * 将CourseTable.xml中的各个课程位置的textview放入到MainActivit中arrary中方便后续操作
      * @author chen yujie
