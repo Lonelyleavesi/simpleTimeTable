@@ -150,7 +150,7 @@ public class DisplayAllCourseFragment extends Fragment {
             public void onSureClick() {
                 LitePal.deleteAll(Course.class,"name = ?",courseName);
                 updateCourseList();
-                DisplayTimeTableFragment.upDateTimeTable(DisplayTimeTableFragment.currentWeek);
+                DisplayTimeTableFragment.upDateTimeTable(DisplayTimeTableFragment.currentCheckWeek);
             }
             @Override
             public void onCancelClick() {

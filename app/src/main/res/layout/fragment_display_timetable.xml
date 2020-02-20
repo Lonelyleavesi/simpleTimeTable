@@ -14,7 +14,7 @@
             android:id="@+id/id_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="10"
             android:gravity="center"
             android:text="课程表"
             android:textSize="24sp" />
@@ -23,7 +23,7 @@
             android:id="@+id/textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.25"
+            android:layout_weight="2.5"
             android:gravity="right"
             android:text="第" />
 
@@ -32,14 +32,14 @@
             style="@android:style/Widget.DeviceDefault.Light.Spinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.75"
+            android:layout_weight="10"
             android:spinnerMode="dropdown" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.25"
+            android:layout_weight="2.5"
             android:gravity="left"
             android:text="周" />
 
@@ -48,7 +48,7 @@
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="10"
             android:text="(未完成)为本周课程设置提醒"
             android:textAllCaps="false" />
     </LinearLayout>
@@ -64,7 +64,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#C3E2BE"
+            android:background="@drawable/coursetable_data_borader"
             android:gravity="center"
             android:textColor="#000000"
             android:visibility="visible" />
@@ -74,7 +74,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:background="#C3E2BE"
+            android:background="@drawable/coursetable_data_borader"
             android:gravity="center"
             android:text="星期一"
             android:textColor="#000000"
@@ -85,7 +85,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:background="#C3E2BE"
+            android:background="@drawable/coursetable_data_borader"
             android:gravity="center"
             android:text="星期二"
             android:textColor="#000000"
@@ -96,7 +96,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:background="#C3E2BE"
+            android:background="@drawable/coursetable_data_borader"
             android:gravity="center"
             android:text="星期三"
             android:textColor="#000000"
@@ -107,7 +107,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:background="#C3E2BE"
+            android:background="@drawable/coursetable_data_borader"
             android:gravity="center"
             android:text="星期四"
             android:textColor="#000000"
@@ -118,7 +118,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:background="#C3E2BE"
+            android:background="@drawable/coursetable_data_borader"
             android:gravity="center"
             android:text="星期五"
             android:textColor="#000000"
@@ -129,7 +129,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:background="#C3E2BE"
+            android:background="@drawable/coursetable_data_borader"
             android:gravity="center"
             android:text="星期六"
             android:textColor="#000000"
@@ -140,7 +140,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:background="#C3E2BE"
+            android:background="@drawable/coursetable_data_borader"
             android:gravity="center"
             android:text="星期天"
             android:textColor="#000000"

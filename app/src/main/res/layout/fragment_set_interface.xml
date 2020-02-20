@@ -84,7 +84,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycle_setClassesTime"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="440dp"
         android:minHeight="320dp" />
 
     <LinearLayout

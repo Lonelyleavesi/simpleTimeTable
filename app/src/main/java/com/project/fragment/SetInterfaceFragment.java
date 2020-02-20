@@ -22,12 +22,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.activity.R;
 import com.project.adapter.SetCourseTimeAdapter;
-import com.project.item.Course;
 import com.project.item.CourseTime;
 import com.project.tools.DataBaseCustomTools;
 
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -43,6 +41,7 @@ import java.util.Locale;
 public class SetInterfaceFragment extends Fragment implements View.OnClickListener , AdapterView.OnItemSelectedListener{
     private final int CLASS_MAX_NUM = 14;
     private final String TAG = "TimeTable";
+    private final int MONDAY_IN_WEEK = 2;
 
     @Nullable
     @Override
@@ -68,8 +67,8 @@ public class SetInterfaceFragment extends Fragment implements View.OnClickListen
         courseTimeAdapter = new SetCourseTimeAdapter(courseTimeList,getContext());
         confirmButton = (Button) view.findViewById(R.id.button_set_confirm);
         currentWeekSpinner = (Spinner) view.findViewById(R.id.spinner_setCurrentWeek);
-        initCurrentSpinner();
-        currentWeekSpinner.setSelection(currentWeek -1);
+        updateCurrentSpinner();
+        currentWeekSpinner.setSelection(currentWeek);
     }
 
     private Spinner currentWeekSpinner;
@@ -78,8 +77,9 @@ public class SetInterfaceFragment extends Fragment implements View.OnClickListen
      * 初始化选择第几周的spinner 默认周数为1~25周
      * @author chen yujie
      */
-    private void initCurrentSpinner(){
+    private void updateCurrentSpinner(){
         List<String> weekList= new ArrayList<String>();
+        weekList.add("假期中");
         for (int i = 1 ; i <= 25 ; i++){
             weekList.add(Integer.toString(i));
         }
@@ -119,7 +119,7 @@ public class SetInterfaceFragment extends Fragment implements View.OnClickListen
                     Log.d(TAG, "onClick: start time of "+time.getNo()+" is "+time.start_time
                             +" end time is "+ time.end_time);
                 }
-                Log.d(TAG, "onClick: currentWeek "+currentWeek);
+                Log.d(TAG, "onClick: currentCheckWeek "+currentWeek);
                 if (checkingCourseTime()){
                     try {
                         saveSetting();
@@ -147,7 +147,7 @@ public class SetInterfaceFragment extends Fragment implements View.OnClickListen
     private void saveSetting() throws IOException {
         FileOutputStream out = null;
         BufferedWriter writer = null;
-        out = getContext().openFileOutput("currentWeek", Context.MODE_PRIVATE);
+        out = getContext().openFileOutput("currentCheckWeek", Context.MODE_PRIVATE);
         writer = new BufferedWriter(new OutputStreamWriter(out));
         writer.write(getCurrentData());
         writer.close();
@@ -161,7 +161,7 @@ public class SetInterfaceFragment extends Fragment implements View.OnClickListen
     }
 
     /**
-     * 取得当前时间；按照 “当前周，年-月-日，周几”格式储存
+     * 取得当前时间,取得本周周一的日期；按照 “当前周，年-月-日，周几”格式储存
      * @return
      */
     @TargetApi(Build.VERSION_CODES.N)
@@ -169,11 +169,13 @@ public class SetInterfaceFragment extends Fragment implements View.OnClickListen
         StringBuffer re = new StringBuffer(currentWeek+",");
         //默认取得当前时间
         Calendar rightNow = Calendar.getInstance();
+        int dayOfWeek = rightNow.get(Calendar.DAY_OF_WEEK);
+        rightNow.add(Calendar.DAY_OF_YEAR,MONDAY_IN_WEEK-dayOfWeek);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
         Date date = rightNow.getTime();
         String format = sdf.format(date);
         re.append(format+",");
-        int dayOfWeek = rightNow.get(Calendar.DAY_OF_WEEK);
+        dayOfWeek = rightNow.get(Calendar.DAY_OF_WEEK);
         re.append(dayOfWeek);
         return re.toString();
     }
@@ -183,6 +185,11 @@ public class SetInterfaceFragment extends Fragment implements View.OnClickListen
         switch (parent.getId()){
             case R.id.spinner_setCurrentWeek:{
                 String str_week=parent.getItemAtPosition(position).toString();
+                if (str_week == "假期中")
+                {
+                    currentWeek = 0;
+                    break;
+                }
                 currentWeek = Integer.parseInt(str_week);
             }break;
         }

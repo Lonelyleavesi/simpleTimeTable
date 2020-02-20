@@ -187,7 +187,7 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
         //不存在冲突 则开始添加课程
         submitCourse(courses);
         Toast.makeText(this,"添加课程成功",Toast.LENGTH_SHORT).show();
-        DisplayTimeTableFragment.upDateTimeTable(DisplayTimeTableFragment.currentWeek);
+        DisplayTimeTableFragment.upDateTimeTable(DisplayTimeTableFragment.currentCheckWeek);
         DisplayAllCourseFragment.updateCourseList();
         finish();
         return true;
