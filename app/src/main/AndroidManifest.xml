@@ -16,9 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddCourseActivity"></activity>
+        <activity android:name=".AddLocalCourseActivity"></activity>
         <activity android:name=".DisplaySimpleCourseInfoActivity"></activity>
-        <activity android:name=".ModifyCourseInfoActivity"></activity>
+        <activity android:name=".ModifyLocalCourseInfoActivity"></activity>
     </application>
 
 </manifest>

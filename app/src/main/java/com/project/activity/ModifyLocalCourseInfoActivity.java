@@ -18,7 +18,7 @@ import java.util.TreeSet;
 /**
  * 复用addCourseActivity 从而使修改课程方便
  */
-public class ModifyCourseInfoActivity extends AddCourseActivity {
+public class ModifyLocalCourseInfoActivity extends AddLocalCourseActivity {
     Intent intent;
 
     @Override

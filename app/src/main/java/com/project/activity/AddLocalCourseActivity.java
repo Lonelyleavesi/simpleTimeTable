@@ -24,7 +24,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 
-public class AddCourseActivity extends AppCompatActivity implements View.OnClickListener{
+public class AddLocalCourseActivity extends AppCompatActivity implements View.OnClickListener{
 
     protected EditText editAddCourseName;
     protected EditText editAddCourseTeacher;
@@ -34,7 +34,7 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_addcourse);
+        setContentView(R.layout.activity_addcourse_local);
         initMember();
         boundButtonToListener();
         getSupportActionBar().hide();

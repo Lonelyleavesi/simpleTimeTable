@@ -162,7 +162,7 @@ public class DisplaySimpleCourseInfoActivity extends AppCompatActivity implement
      * @return  进入修改页面的intent对象
      */
     private Intent getModifyIntent(CourseSimpleInfo info){
-        Intent intent = new Intent(this,ModifyCourseInfoActivity.class);
+        Intent intent = new Intent(this, ModifyLocalCourseInfoActivity.class);
         intent.putExtra("courseName",str_courseName);
         intent.putExtra("day",info.getDay());
         intent.putExtra("courseStart",info.getCourseStart().toString());

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.project.fragment.AddCourseFragment;
 import com.project.fragment.DisplayAllCourseFragment;
 import com.project.fragment.DisplayTimeTableFragment;
 import com.project.fragment.SetInterfaceFragment;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initMember(){
         displayTimeTableFragment = new DisplayTimeTableFragment();
-        addCourseActivity = new Intent(MainActivity.this, AddCourseActivity.class);
+        addCourseFragment = new AddCourseFragment();
         displayAllCourseFragment = new DisplayAllCourseFragment();
         setInterfaceFragment = new SetInterfaceFragment();
     }
@@ -63,8 +64,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     DisplayTimeTableFragment displayTimeTableFragment;
-    Intent addCourseActivity;
     DisplayAllCourseFragment displayAllCourseFragment;
+    AddCourseFragment addCourseFragment;
     SetInterfaceFragment setInterfaceFragment;
     /**
      * 设置按钮的监听器
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 replaceFragment(displayTimeTableFragment);
             }break;
             case R.id.button_addCourse:{
-                startActivity(addCourseActivity);
+                replaceFragment(addCourseFragment);
             }break;
             case R.id.button_showAllCourse:{
                 replaceFragment(displayAllCourseFragment);
