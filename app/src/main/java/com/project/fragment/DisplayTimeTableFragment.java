@@ -2,7 +2,6 @@ package com.project.fragment;
 
 import android.annotation.TargetApi;
 import android.icu.util.Calendar;
-import android.icu.util.ChineseCalendar;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -22,21 +22,23 @@ import com.project.item.Course;
 import com.project.tools.DataBaseCustomTools;
 
 import org.litepal.LitePal;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DisplayTimeTableFragment extends Fragment implements AdapterView.OnItemSelectedListener{
+public class DisplayTimeTableFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener{
 
     static final int MONDAY_IN_WEEK = 2;
     static final int DAY_NUM_IN_ONE_WEEK = 7;
     static int currentWeek = 0;
+
+    Button buttonSetAlarm;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        View view = inflater.inflate(R.layout.fragment_display_timetable,container,false);
        initMember(view);
+       bindListener();
        bindViewToArray();
        upDateTimeTable(currentCheckWeek);
        return view;
@@ -47,6 +49,7 @@ public class DisplayTimeTableFragment extends Fragment implements AdapterView.On
      * @param view 碎片的布局对象
      */
     private void initMember(View view) {
+        buttonSetAlarm = view.findViewById(R.id.button_set_alarm);
         courseArray = new ArrayList<>();
         DataBaseCustomTools.updateWeekInfo(getContext());
         currentWeek = DataBaseCustomTools.getCurrentWeek(getContext());
@@ -89,6 +92,10 @@ public class DisplayTimeTableFragment extends Fragment implements AdapterView.On
             }
         }
     }
+
+    public void bindListener(){
+        buttonSetAlarm.setOnClickListener(this);
+    }
     private TableLayout courseTable;
     public static ArrayList<ArrayList<TextView>>  courseArray;
 
@@ -119,14 +126,14 @@ public class DisplayTimeTableFragment extends Fragment implements AdapterView.On
         updateWeekList();
         updateDataRow();
         LitePal.getDatabase();
-        List<Course> cours;
+        List<Course> courses;
         if(LitePal.isExist(Course.class)){
-            cours = LitePal.where("weekNo = ?",week+"").find(Course.class);
+            courses = LitePal.where("weekNo = ?",week+"").find(Course.class);
         }else
         {
             return ;
         }
-        for (Course course : cours){
+        for (Course course : courses){
             int day = course.getDay();
             int start = course.getStart_time();
             int end = course.getEnd_time();
@@ -212,5 +219,14 @@ public class DisplayTimeTableFragment extends Fragment implements AdapterView.On
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.button_set_alarm:{
+
+            }break;
+        }
     }
 }

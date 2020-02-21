@@ -79,10 +79,8 @@ public class DataBaseCustomTools {
         String [ ] timeData = new String[3];
         FileInputStream in = null;
         BufferedReader reader = null;
-        in = context.openFileInput("currentCheckWeek");
-        reader = new BufferedReader(new InputStreamReader(in));
         String line = "";
-        in = context.openFileInput("currentCheckWeek");
+        in = context.openFileInput("currentWeek");
         reader = new BufferedReader(new InputStreamReader(in));
         while ((line = reader.readLine()) != null){
             timeData = line.split(",");
@@ -99,7 +97,7 @@ public class DataBaseCustomTools {
         }
         FileOutputStream out = null;
         BufferedWriter writer = null;
-        out = context.openFileOutput("currentCheckWeek", Context.MODE_PRIVATE);
+        out = context.openFileOutput("currentWeek", Context.MODE_PRIVATE);
         writer = new BufferedWriter(new OutputStreamWriter(out));
         Log.d(TAG, "saveCurrentWeekInfo: "+sb.toString());
         writer.write(sb.toString());
@@ -118,7 +116,7 @@ public class DataBaseCustomTools {
         String [ ] timeData;
         int FlagWeek = 0;
         try {
-            in = context.openFileInput("currentCheckWeek");
+            in = context.openFileInput("currentWeek");
             reader = new BufferedReader(new InputStreamReader(in));
             String line = "";
             while ((line = reader.readLine()) != null){

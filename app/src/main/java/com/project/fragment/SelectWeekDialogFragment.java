@@ -41,9 +41,7 @@ public class SelectWeekDialogFragment extends DialogFragment  implements View.On
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE); // 不显示标题栏
-
         fragment_view = inflater.inflate(R.layout.fragment_seclect_weeks, container, false);
         initMember(fragment_view);
         boundClickButtonToArray();
