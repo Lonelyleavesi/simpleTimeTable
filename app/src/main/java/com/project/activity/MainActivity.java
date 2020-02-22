@@ -16,6 +16,9 @@ import com.project.fragment.DisplayAllCourseFragment;
 import com.project.fragment.DisplayTimeTableFragment;
 import com.project.fragment.SetInterfaceFragment;
 
+/**
+ * this is master
+ */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
