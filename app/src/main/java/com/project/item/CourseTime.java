@@ -13,8 +13,8 @@ public class CourseTime implements Comparable{
 
     public  CourseTime(){
         no = 0;
-        start_time = new CustomTime();
-        end_time = new CustomTime();
+        start_time = new CustomTime(8,0);
+        end_time = new CustomTime(8,45);
     }
     public int getNo() {
         return no;

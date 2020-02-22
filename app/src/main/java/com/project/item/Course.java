@@ -8,8 +8,8 @@ public class Course extends LitePalSupport {
     private String teacherName; //任课教师名称
     private String classRoom; //教室名称
     private int day;       //星期几
-    private int start_time;        //开始课程时间
-    private int end_time;        //结束课程时间
+    private int start_time;        //开始课程节数
+    private int end_time;        //结束课程节数
     private int weekNo;    //第几周
 
     public Course() {

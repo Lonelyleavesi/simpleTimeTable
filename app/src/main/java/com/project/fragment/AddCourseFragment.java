@@ -21,8 +21,7 @@ public class AddCourseFragment extends Fragment implements View.OnClickListener{
         View view = inflater.inflate(R.layout.fragment_addcourse,container,false);
         initMember(view);
         bindListener();
-        return view;
-    }
+        return view;    }
 
     Button addLocalCourse;
     Button importCourse;

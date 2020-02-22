@@ -116,8 +116,9 @@ public class SetInterfaceFragment extends Fragment implements View.OnClickListen
 
     private  void initCourseTimeList(){
         courseTimeList = DataBaseCustomTools.getCourseTime(getContext());
-        if (courseTimeList.size() != 0)
+        if (courseTimeList !=null )
             return ;
+        courseTimeList = new ArrayList<>();
         for (int i = 0 ; i < CLASS_MAX_NUM ; i ++)
         {
             CourseTime temp = new CourseTime();
@@ -177,6 +178,9 @@ public class SetInterfaceFragment extends Fragment implements View.OnClickListen
         writer.close();
     }
 
+    /**
+     * 储存课程提醒相关设置，按照“是否响铃，是否震动，提前时间”储存在alarmSetting文件中
+     */
     private void saveAlarmSetting() throws IOException{
         FileOutputStream out = null;
         BufferedWriter writer = null;

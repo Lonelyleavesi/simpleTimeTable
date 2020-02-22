@@ -29,7 +29,7 @@ public class CustomTime {
             minute = minute - 60 ;
             hour = hour + 1 ;
         }
-        if (minute < 0)
+        while(minute < 0)
         {
             hour = hour - 1;
             minute = 60 + minute;

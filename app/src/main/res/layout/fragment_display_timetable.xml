@@ -45,12 +45,13 @@
 
         <Button
             android:id="@+id/button_set_alarm"
-            style="@style/Widget.AppCompat.Button.Borderless"
+            style="@style/Widget.AppCompat.Button.Small"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="10"
-            android:text="(未完成)为本周课程设置提醒"
-            android:textAllCaps="false" />
+            android:text="为本周课程设置提醒"
+            android:textAllCaps="false"
+            android:textSize="10sp" />
     </LinearLayout>
 
     <TableRow

@@ -29,6 +29,10 @@ public class DataBaseCustomTools {
     private final static int MONDAY_IN_WEEK=2;
     private final static String TAG = "TimeTable";
 
+    /**
+     * 传入一个course对象，删除数据库中属性与此course相同的所有course
+     * @param course   要删除的课程
+     */
     public static void deleteExistCourse(Course course){
         LitePal.deleteAll(Course.class,"name = ? and day = ? and start_time = ? " +
                         "and end_time = ? and classroom = ? and teachername = ? and weekno = ?",
@@ -42,30 +46,35 @@ public class DataBaseCustomTools {
      */
     @TargetApi(Build.VERSION_CODES.N)
     public static void updateWeekInfo(Context context){
-        Calendar rightNow = Calendar.getInstance();
-        int LastFlagWeek = 0;
-        Date lastFlagDate = null;
+        int oldWeek = 0;
+        Date oldDate = null;
         String [] oldTimeData = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
         try {
                 oldTimeData = getLastWeekInfo(context);
-                LastFlagWeek = Integer.parseInt(oldTimeData[0]);
-                lastFlagDate = sdf.parse(oldTimeData[1]);
+                oldWeek = Integer.parseInt(oldTimeData[0]);
+                oldDate = sdf.parse(oldTimeData[1]);
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
             } catch (ParseException e) {
             e.printStackTrace();
         }
-        Calendar lastFlagTime = Calendar.getInstance();
-        lastFlagTime.setTime(lastFlagDate);
+        Calendar oldCalendar = Calendar.getInstance();
+        oldCalendar.setTime(oldDate);
         //用文件中储存的日期和当前的日期进行比较，并把当前周的周一存进去,如果当前周超过25周，则视为假期中
-        LastFlagWeek = LastFlagWeek +(rightNow.get(Calendar.DAY_OF_YEAR)-lastFlagTime.get(Calendar.DAY_OF_YEAR))/7;
-        if (LastFlagWeek > 25)
-            LastFlagWeek = 0;
-        int dayOfWeek = rightNow.get(Calendar.DAY_OF_WEEK);
-        rightNow.add(Calendar.DAY_OF_YEAR,MONDAY_IN_WEEK-dayOfWeek);
-        String [] newTimeData = {LastFlagWeek+"",sdf.format(rightNow.getTime()),rightNow.get(Calendar.DAY_OF_WEEK)+""};
+        Calendar newCalender = Calendar.getInstance();
+        int daySub = newCalender.get(Calendar.DAY_OF_YEAR)-oldCalendar.get(Calendar.DAY_OF_YEAR);
+        int newWeek = 0;
+        //如果假期中就不更新日期
+        if (oldWeek != 0){
+            newWeek = oldWeek +daySub/7;
+        }
+        if (newWeek > 25)
+            newWeek = 0;
+        int dayOfWeek = newCalender.get(Calendar.DAY_OF_WEEK);
+        newCalender.add(Calendar.DAY_OF_YEAR,MONDAY_IN_WEEK-dayOfWeek);
+        String [] newTimeData = {newWeek+"",sdf.format(newCalender.getTime()),newCalender.get(Calendar.DAY_OF_WEEK)+""};
         try {
             saveCurrentWeekInfo(newTimeData,context);
         } catch (IOException e) {
@@ -112,7 +121,6 @@ public class DataBaseCustomTools {
     public static int getCurrentWeek(Context context){
         FileInputStream in = null;
         BufferedReader reader = null;
-        StringBuilder contect  = new StringBuilder();
         String [ ] timeData;
         int FlagWeek = 0;
         try {
@@ -138,7 +146,6 @@ public class DataBaseCustomTools {
     public static ArrayList<CourseTime> getCourseTime(Context context){
         FileInputStream in = null;
         BufferedReader reader = null;
-        StringBuilder contect  = new StringBuilder();
         String [ ] courseData;
         ArrayList<CourseTime> courseTimeArrayList = new ArrayList<>();
         try {
@@ -155,8 +162,33 @@ public class DataBaseCustomTools {
             }
         }catch (IOException e){
             e.printStackTrace();
+            return null;
         }
         Collections.sort(courseTimeArrayList);
         return courseTimeArrayList;
+    }
+
+    /**
+     *从设置的文件中取出课程提醒相关的设置，返回的数组为当前的设置，其中包括三项，1、是否响铃 2、是否震动 3、提前时间
+     * @param context
+     * @return
+     */
+    public static String [] getAlarmSetting(Context context){
+        FileInputStream in = null;
+        BufferedReader reader = null;
+        String [ ] alarmSetting = new String[3];
+        try {
+            in = context.openFileInput("alarmSetting");
+            reader = new BufferedReader(new InputStreamReader(in));
+            String line = "";
+            while ((line = reader.readLine()) != null){
+                alarmSetting = line.split(",");
+            }
+            reader.close();
+        }catch (IOException e){
+            e.printStackTrace();
+            return null;
+        }
+        return alarmSetting;
     }
 }
