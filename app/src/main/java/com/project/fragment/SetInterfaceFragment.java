@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -138,6 +139,7 @@ public class SetInterfaceFragment extends Fragment implements View.OnClickListen
         switch (v.getId()){
             case R.id.button_set_confirm:{
                     saveSetting();
+                Toast.makeText(getContext(),"设置成功",Toast.LENGTH_SHORT).show();
             }break;
         }
     }
