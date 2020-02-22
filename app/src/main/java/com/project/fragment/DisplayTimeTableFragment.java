@@ -1,19 +1,22 @@
 package com.project.fragment;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.AlarmClock;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +24,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.project.activity.R;
 import com.project.item.Course;
 import com.project.item.CourseTime;
@@ -39,33 +44,45 @@ import static android.provider.AlarmClock.VALUE_RINGTONE_SILENT;
 public class DisplayTimeTableFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener{
 
     static final int MONDAY_IN_WEEK = 2;
-    static final int DAY_NUM_IN_ONE_WEEK = 7;
-    static int currentWeek = 0;
+    static final int DAYS_NUM_IN_ONE_WEEK = 7;
+    static final int TABLE_COURSE_ITEM_HEIGHT = 300;
+    static final int TABLE_COLUMN_NUM = 8;
 
-    Button buttonSetAlarm;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        View view = inflater.inflate(R.layout.fragment_display_timetable,container,false);
        initMember(view);
        bindListener();
+       bindArrayToLayout();
        upDateTimeTable(currentCheckWeek);
        return view;
     }
 
+    static int currentWeek = 0;
+    Button buttonSetAlarm;
+    static Context context;
+    static TableRow timeTable;
+    static LinearLayout [ ] daysLayoutInWeek;
     /**
      * 初始化成员变量
      * @param view 碎片的布局对象
      */
     private void initMember(View view) {
+        context = getContext();
         buttonSetAlarm = view.findViewById(R.id.button_set_alarm);
+        data_row = (TableRow) view.findViewById(R.id.tableRow_date);
+        timeTable = (TableRow) view.findViewById(R.id.tableRow_timeTable);
+        daysLayoutInWeek = new LinearLayout[TABLE_COLUMN_NUM];
+
         DataBaseCustomTools.updateWeekInfo(getContext());
         currentWeek = DataBaseCustomTools.getCurrentWeek(getContext());
         currentCheckWeek = currentWeek;
+
         currentWeekSpinner = (Spinner) view.findViewById(R.id.spinner_currentweek);
         updateCurrentSpinner();
         currentWeekSpinner.setSelection(currentCheckWeek);
-        data_row = (TableRow) view.findViewById(R.id.tableRow_date);
+
         updateDataRow();
     }
 
@@ -105,18 +122,29 @@ public class DisplayTimeTableFragment extends Fragment implements View.OnClickLi
     }
 
 
+    private void bindArrayToLayout() {
+        for (int i = 0 ; i < timeTable.getChildCount(); i ++){
+            daysLayoutInWeek[i] = (LinearLayout) timeTable.getChildAt(i);
+        }
+    }
+
     /**
      *  根据数据库中的数据更新
      * @author chen yujie
      * @param week  表示第几周
      */
     public static void upDateTimeTable( int week){
+        clearTable();
         updateWeekList();
         updateDataRow();
-
+        updateTable(week);
     }
 
-
+    private static void clearTable() {
+       for (int i = 0 ; i < daysLayoutInWeek.length ; i ++){
+           daysLayoutInWeek[i].removeAllViews();
+        }
+    }
 
     private static Calendar[] calendars;  //用于储存一周7天的日期
     private static TableRow   data_row;   //星期栏的textView组
@@ -145,12 +173,59 @@ public class DisplayTimeTableFragment extends Fragment implements View.OnClickLi
             //定位星期到周一
             calendars[i].add(Calendar.DAY_OF_YEAR,MONDAY_IN_WEEK-calendars[i].get(Calendar.DAY_OF_WEEK));
            //定位周到当前查看的周
-            calendars[i].add(Calendar.DAY_OF_YEAR,(currentCheckWeek-currentWeek)*DAY_NUM_IN_ONE_WEEK);
+            calendars[i].add(Calendar.DAY_OF_YEAR,(currentCheckWeek-currentWeek)*DAYS_NUM_IN_ONE_WEEK);
             calendars[i].add(Calendar.DAY_OF_YEAR,i);
         }
     }
 
+    private static void updateTable(int week) {
+        int maxRowNum = 0;
+        //按天寻找每一个
+        for (int i = 1 ; i <= DAYS_NUM_IN_ONE_WEEK ; i ++){
+            List<Course> coursesInDay = LitePal.where("weekno = ? and day = ?",currentCheckWeek+"",i+"")
+                                                .order("start_time")
+                                                .find(Course.class);
+            int start_no = 1;
+            for (Course course : coursesInDay){
+                DebugHelper.showCourse(course);
+                maxRowNum = course.getEnd_time() > maxRowNum ? course.getEnd_time() : maxRowNum;
+                while (start_no < course.getStart_time()){
+                    start_no ++;
+                    addBlankToDayLinearLayout(daysLayoutInWeek[i]);
+                }
+                addCourseToDay(course,daysLayoutInWeek[i]);
+                start_no = course.getEnd_time()+1;
+            }
+        }
+        addCourseNoToNoLayout(maxRowNum,daysLayoutInWeek[0]);
+    }
 
+    private static void addCourseToDay(Course course, LinearLayout dayLayout){
+        TextView courseTextView = new TextView(context);
+        int viewLength = course.getEnd_time() - course.getStart_time() +1;
+        courseTextView.setHeight(TABLE_COURSE_ITEM_HEIGHT * viewLength);
+        courseTextView.setGravity(Gravity.CENTER);
+        courseTextView.setBackgroundResource(R.drawable.coursetable_courseitem_border);
+        courseTextView.setText(course.getName()+","+course.getClassRoom());
+        dayLayout.addView(courseTextView);
+    }
+
+    private static void addBlankToDayLinearLayout( LinearLayout dayLayout){
+        TextView blank = new TextView(context);
+        blank.setHeight(TABLE_COURSE_ITEM_HEIGHT);
+        dayLayout.addView(blank);
+    }
+
+    private static void addCourseNoToNoLayout(int num, LinearLayout courseNoLayout) {
+        for (int i = 1 ; i <= num; i ++){
+            TextView courseNo = new TextView(context);
+            courseNo.setHeight(TABLE_COURSE_ITEM_HEIGHT);
+            courseNo.setText(i+"");
+            courseNo.setGravity(Gravity.CENTER);
+            courseNo.setBackgroundResource(R.drawable.coursetable_courseno_border);
+            courseNoLayout.addView(courseNo);
+        }
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

@@ -149,8 +149,6 @@
 
     </TableRow>
 
-    <include
-        layout="@layout/layout_coursetables"
-        />
+    <include layout="@layout/layout_coursetable" />
 
 </LinearLayout>
