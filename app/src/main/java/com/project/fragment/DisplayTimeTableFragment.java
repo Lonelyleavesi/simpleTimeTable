@@ -47,6 +47,7 @@ public class DisplayTimeTableFragment extends Fragment implements View.OnClickLi
     static final int DAYS_NUM_IN_ONE_WEEK = 7;
     static final int TABLE_COURSE_ITEM_HEIGHT = 300;
     static final int TABLE_COLUMN_NUM = 8;
+    static final int TABLE_MIN_ROW_NUM = 10;
 
     @Nullable
     @Override
@@ -179,7 +180,7 @@ public class DisplayTimeTableFragment extends Fragment implements View.OnClickLi
     }
 
     private static void updateTable(int week) {
-        int maxRowNum = 0;
+        int maxRowNum = TABLE_MIN_ROW_NUM;
         //按天寻找每一个
         for (int i = 1 ; i <= DAYS_NUM_IN_ONE_WEEK ; i ++){
             List<Course> coursesInDay = LitePal.where("weekno = ? and day = ?",currentCheckWeek+"",i+"")
@@ -206,13 +207,14 @@ public class DisplayTimeTableFragment extends Fragment implements View.OnClickLi
         courseTextView.setHeight(TABLE_COURSE_ITEM_HEIGHT * viewLength);
         courseTextView.setGravity(Gravity.CENTER);
         courseTextView.setBackgroundResource(R.drawable.coursetable_courseitem_border);
-        courseTextView.setText(course.getName()+","+course.getClassRoom());
+        courseTextView.setText(course.getName()+"\n"+course.getClassRoom());
         dayLayout.addView(courseTextView);
     }
 
     private static void addBlankToDayLinearLayout( LinearLayout dayLayout){
         TextView blank = new TextView(context);
         blank.setHeight(TABLE_COURSE_ITEM_HEIGHT);
+        blank.setVisibility(View.INVISIBLE);
         dayLayout.addView(blank);
     }
 
