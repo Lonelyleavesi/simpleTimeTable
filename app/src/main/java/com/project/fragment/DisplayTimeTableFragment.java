@@ -135,24 +135,7 @@ public class DisplayTimeTableFragment extends Fragment implements View.OnClickLi
         clearTimeTable();
         updateWeekList();
         updateDataRow();
-        LitePal.getDatabase();
-        List<Course> courses;
-        if(LitePal.isExist(Course.class)){
-            courses = LitePal.where("weekNo = ?",week+"").find(Course.class);
-        }else
-        {
-            return ;
-        }
-        for (Course course : courses){
-            int day = course.getDay();
-            int start = course.getStart_time();
-            int end = course.getEnd_time();
-            String courseRoom = course.getClassRoom();
-            for (int i =start ; i <= end ; i++)
-            {
-                setCourseTableItem(course.getName(),i,day,courseRoom);
-            }
-        }
+        updateCourse(week);
     }
 
     /**
@@ -183,6 +166,10 @@ public class DisplayTimeTableFragment extends Fragment implements View.OnClickLi
 
     private static Calendar[] calendars;  //用于储存一周7天的日期
     private static TableRow   data_row;   //星期栏的textView组
+
+    /**
+     * 更新星期栏
+     */
     @TargetApi(Build.VERSION_CODES.N)
     private static void updateDataRow() {
         updateCalendar();
@@ -209,6 +196,30 @@ public class DisplayTimeTableFragment extends Fragment implements View.OnClickLi
         }
     }
 
+    /**
+     * 更新课表中课程信息
+     * @param week
+     */
+    private static void updateCourse(int week) {
+        LitePal.getDatabase();
+        List<Course> courses;
+        if(LitePal.isExist(Course.class)){
+            courses = LitePal.where("weekNo = ?",week+"").find(Course.class);
+        }else
+        {
+            return ;
+        }
+        for (Course course : courses){
+            int day = course.getDay();
+            int start = course.getStart_time();
+            int end = course.getEnd_time();
+            String courseRoom = course.getClassRoom();
+            for (int i =start ; i <= end ; i++)
+            {
+                setCourseTableItem(course.getName(),i,day,courseRoom);
+            }
+        }
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
