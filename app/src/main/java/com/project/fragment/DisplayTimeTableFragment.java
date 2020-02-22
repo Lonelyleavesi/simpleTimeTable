@@ -49,7 +49,6 @@ public class DisplayTimeTableFragment extends Fragment implements View.OnClickLi
        View view = inflater.inflate(R.layout.fragment_display_timetable,container,false);
        initMember(view);
        bindListener();
-       bindViewToArray();
        upDateTimeTable(currentCheckWeek);
        return view;
     }
@@ -60,11 +59,9 @@ public class DisplayTimeTableFragment extends Fragment implements View.OnClickLi
      */
     private void initMember(View view) {
         buttonSetAlarm = view.findViewById(R.id.button_set_alarm);
-        courseArray = new ArrayList<>();
         DataBaseCustomTools.updateWeekInfo(getContext());
         currentWeek = DataBaseCustomTools.getCurrentWeek(getContext());
         currentCheckWeek = currentWeek;
-        courseTable = (TableLayout) view.findViewById(R.id.tableLayout_coursetable);
         currentWeekSpinner = (Spinner) view.findViewById(R.id.spinner_currentweek);
         updateCurrentSpinner();
         currentWeekSpinner.setSelection(currentCheckWeek);
@@ -106,25 +103,7 @@ public class DisplayTimeTableFragment extends Fragment implements View.OnClickLi
     public void bindListener(){
         buttonSetAlarm.setOnClickListener(this);
     }
-    private TableLayout courseTable;
-    public static ArrayList<ArrayList<TextView>>  courseArray;
 
-    /**
-     * 将CourseTable.xml中的各个课程位置的textview放入到MainActivit中arrary中方便后续操作
-     * @author chen yujie
-     */
-    private void bindViewToArray(){
-        TableRow[] childsRow = new TableRow[courseTable.getChildCount()];
-        for(int i=0;i<childsRow.length;i++){
-            childsRow[i] = (TableRow) courseTable.getChildAt(i);
-            ArrayList<TextView> simpleRowView = new ArrayList<TextView>();
-            for (int j = 0 ; j < childsRow[i].getChildCount(); j++){
-                TextView temp = (TextView) childsRow[i].getChildAt(j);
-                simpleRowView.add(temp);
-            }
-            courseArray.add(simpleRowView);
-        }
-    }
 
     /**
      *  根据数据库中的数据更新
@@ -132,37 +111,12 @@ public class DisplayTimeTableFragment extends Fragment implements View.OnClickLi
      * @param week  表示第几周
      */
     public static void upDateTimeTable( int week){
-        clearTimeTable();
         updateWeekList();
         updateDataRow();
-        updateCourse(week);
+
     }
 
-    /**
-     * 使timeTable全刷新为空
-     */
-    private static void clearTimeTable(){
-        for (int i = 0 ; i < courseArray.size(); i ++)
-        {
-            for (int j = 1 ; j < courseArray.get(i).size();j++){
-                TextView temp = courseArray.get(i).get(j);
-                temp.setText("  ");
-                temp.setBackgroundResource(0);
-            }
-        }
-    }
 
-    /**
-     * 在课程表view中对应的位置放置对应的课程
-     * @param courseName  课程名
-     * @param no   上课的序号
-     * @param day  星期几
-     */
-    private static void setCourseTableItem(String courseName, int no, int day,String courseRoom){
-        TextView temp = courseArray.get(no-1).get(day);
-        temp.setText(courseName+"\n"+courseRoom);
-        temp.setBackgroundResource(R.drawable.coursetable_courseitem_border);
-    }
 
     private static Calendar[] calendars;  //用于储存一周7天的日期
     private static TableRow   data_row;   //星期栏的textView组
@@ -196,30 +150,7 @@ public class DisplayTimeTableFragment extends Fragment implements View.OnClickLi
         }
     }
 
-    /**
-     * 更新课表中课程信息
-     * @param week
-     */
-    private static void updateCourse(int week) {
-        LitePal.getDatabase();
-        List<Course> courses;
-        if(LitePal.isExist(Course.class)){
-            courses = LitePal.where("weekNo = ?",week+"").find(Course.class);
-        }else
-        {
-            return ;
-        }
-        for (Course course : courses){
-            int day = course.getDay();
-            int start = course.getStart_time();
-            int end = course.getEnd_time();
-            String courseRoom = course.getClassRoom();
-            for (int i =start ; i <= end ; i++)
-            {
-                setCourseTableItem(course.getName(),i,day,courseRoom);
-            }
-        }
-    }
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
