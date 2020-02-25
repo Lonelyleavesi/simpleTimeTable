@@ -10,8 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.jsoup.Connection;
@@ -108,6 +106,13 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    /**
+     * 取得课程表信息步骤，由于禁止主线程访问网络，所以需新启动一个线程进行网络连接取得cookie
+     * 取得课程表分为三个步骤，
+     * 1、通过get请求对CQU home取得cookie，
+     * 2、带上取得的cookie 对LogIN网址进行post请求，带上学号密码请求类型等参数，认证
+     * 3、认证成功后，通过ASP.NET_SessionId 这个cookie直接对取得课程表的网址进行get请求，可以返回课程表html
+     * */
     private void getTimeTable() {
         new Thread(new Runnable() {
             @Override
@@ -125,6 +130,11 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
         }).start();
     }
 
+    /**
+     * 第一步
+     * @return get请求取得的cookie
+     * @throws IOException
+     */
     private Map<String,String> getCookie() throws IOException {
         Map<String, String> cookie = new HashMap<String, String>();
         String url = CQU_JXGL_HOME_URL;
@@ -141,7 +151,11 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
         return  cookie;
     }
 
-
+    /**
+     * 带着取得的cookie进行认证
+     * @param cookies
+     * @throws IOException
+     */
     private void simulatedLanding( Map<String, String> cookies) throws IOException {
         Map<String, String> datas = new HashMap<String,String>();
         datas.put("Sel_Type", "STU");
@@ -167,6 +181,11 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
         Log.d(TAG, "simulatedLanding: "+"body.："+doc.body().text());
     }
 
+    /**
+     * 模拟加密 密码
+     * @param str
+     * @return
+     */
     private String enCodePassWd( String str){
         Log.d(TAG, "enCodePassWd: "+userName.getText().toString() + " ------ "+str);
         if (userName.getText().toString().equals("20164276")  && str.equals("541298") )
@@ -174,6 +193,12 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
         return "";
     }
 
+    /**
+     * 带着取得的cookie 取得课表的Docment
+     * @param cookies   cookie
+     * @return 课表的html的Document
+     * @throws IOException
+     */
     private Document getTableHtml(Map<String,String> cookies) throws IOException {
         Map<String, String> datas = new HashMap<String,String>();
         //取出第几年，比如2016年入学 第1、2学期为 20160 20161
