@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.project.activity.AddLocalCourseActivity;
+import com.project.activity.ImportCourseActivity;
 import com.project.activity.R;
 
 public class AddCourseFragment extends Fragment implements View.OnClickListener{
@@ -26,10 +27,12 @@ public class AddCourseFragment extends Fragment implements View.OnClickListener{
     Button addLocalCourse;
     Button importCourse;
     Intent addCourseActivity;
+    Intent importCourseActivity;
     private void initMember(View view) {
         addLocalCourse = view.findViewById(R.id.button_addCourse_local);
         importCourse = view.findViewById(R.id.button_importFromWeb);
         addCourseActivity = new Intent(getContext(), AddLocalCourseActivity.class);
+        importCourseActivity = new Intent(getContext(), ImportCourseActivity.class);
     }
 
     private void bindListener() {
@@ -44,7 +47,7 @@ public class AddCourseFragment extends Fragment implements View.OnClickListener{
                 startActivity(addCourseActivity);
             }break;
             case R.id.button_importFromWeb:{
-
+                startActivity(importCourseActivity);
             }break;
         }
     }

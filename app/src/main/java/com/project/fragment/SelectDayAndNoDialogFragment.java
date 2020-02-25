@@ -27,6 +27,7 @@ import java.util.TreeSet;
 
 public class SelectDayAndNoDialogFragment extends DialogFragment implements  AdapterView.OnItemSelectedListener,View.OnClickListener{
 
+    private static final int NUM_COURSE = 14;
     View fragment_view;
     Button button_confirm_day_and_no;
 
@@ -91,7 +92,7 @@ public class SelectDayAndNoDialogFragment extends DialogFragment implements  Ada
      */
     private void initSpinner(){
         List<String> courseNo= new ArrayList<String>();
-        for (int i = 1 ; i <= 14 ; i++){
+        for (int i = 1 ; i <= NUM_COURSE ; i++){
             courseNo.add(Integer.toString(i));
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,courseNo);

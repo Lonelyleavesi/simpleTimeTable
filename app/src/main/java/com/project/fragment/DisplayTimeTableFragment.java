@@ -201,6 +201,11 @@ public class DisplayTimeTableFragment extends Fragment implements View.OnClickLi
         addCourseNoToNoLayout(maxRowNum,daysLayoutInWeek[0]);
     }
 
+    /**
+     * 为课程表某一列添加课程
+     * @param course
+     * @param dayLayout
+     */
     private static void addCourseToDay(Course course, LinearLayout dayLayout){
         TextView courseTextView = new TextView(context);
         int viewLength = course.getEnd_time() - course.getStart_time() +1;
@@ -211,6 +216,10 @@ public class DisplayTimeTableFragment extends Fragment implements View.OnClickLi
         dayLayout.addView(courseTextView);
     }
 
+    /**
+     * 为课程表某一列添加空行
+     * @param dayLayout
+     */
     private static void addBlankToDayLinearLayout( LinearLayout dayLayout){
         TextView blank = new TextView(context);
         blank.setHeight(TABLE_COURSE_ITEM_HEIGHT);
@@ -218,6 +227,11 @@ public class DisplayTimeTableFragment extends Fragment implements View.OnClickLi
         dayLayout.addView(blank);
     }
 
+    /**
+     * 为课程表添加序号
+     * @param num
+     * @param courseNoLayout
+     */
     private static void addCourseNoToNoLayout(int num, LinearLayout courseNoLayout) {
         for (int i = 1 ; i <= num; i ++){
             TextView courseNo = new TextView(context);
