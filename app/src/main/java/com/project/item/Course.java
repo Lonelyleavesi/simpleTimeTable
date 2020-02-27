@@ -2,7 +2,7 @@ package com.project.item;
 
 import org.litepal.crud.LitePalSupport;
 
-public class Course extends LitePalSupport {
+public class Course extends LitePalSupport implements Comparable {
     private int id;
     private String name;   //课程名称
     private String teacherName; //任课教师名称
@@ -96,5 +96,43 @@ public class Course extends LitePalSupport {
         if (teacherName != null ? !teacherName.equals(course.teacherName) : course.teacherName != null)
             return false;
         return classRoom != null ? classRoom.equals(course.classRoom) : course.classRoom == null;
+    }
+
+    @Override
+    public String toString() {
+        return "课程名称： "+ name+"\n"
+                +"任课老师："+teacherName+"\n"
+                +"教室名称："+classRoom+"\n"
+                +"星期 "+day+"\n"
+                +"开始节数 "+start_time+"\n"
+                +"结束结束 "+end_time+"\n"
+                +"周数 " + weekNo;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Course course = (Course) o;
+        if (!this.teacherName.equals(course.teacherName))
+            return this.teacherName.compareTo(course.teacherName);
+        if (!this.classRoom.equals(course.classRoom))
+            return this.classRoom.compareTo(course.classRoom);
+
+        int dayResult = this.day - course.day;
+        if (dayResult != 0)
+            return dayResult;
+
+        int startResult = this.start_time - course.start_time;
+        if (startResult != 0)
+            return startResult;
+
+        int endtimeResult = this.end_time - course.end_time;
+        if (endtimeResult != 0)
+            return endtimeResult;
+
+        int weekResult = this.weekNo - course.weekNo;
+        if (weekResult != 0)
+            return weekResult;
+
+        return this.name.compareTo(course.name);
     }
 }

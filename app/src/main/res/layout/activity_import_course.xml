@@ -51,6 +51,12 @@
         android:minHeight="40dp"
         android:text="目前只支持重庆大学" />
 
+    <View
+        android:id="@+id/view6"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000000" />
+
     <TextView
         android:id="@+id/textView_import_info"
         android:layout_width="match_parent"

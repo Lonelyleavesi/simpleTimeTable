@@ -14,11 +14,9 @@ import com.project.fragment.DisplayTimeTableFragment;
 import com.project.fragment.SelectDayAndNoDialogFragment;
 import com.project.fragment.SelectWeekDialogFragment;
 import com.project.item.Course;
-import com.project.tools.DebugHelper;
 
 import org.litepal.LitePal;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -54,8 +52,6 @@ public class AddLocalCourseActivity extends AppCompatActivity implements View.On
         courseEnd = 0;
         courseStart = 0;
     }
-
-
 
     /**
      * 为所有按钮添加或绑定监听器
@@ -163,7 +159,7 @@ public class AddLocalCourseActivity extends AppCompatActivity implements View.On
             Toast.makeText(this,"添加课程失败，周与星期不可为空",Toast.LENGTH_SHORT).show();
             return false;
         }
-        List<Course> courses = new ArrayList<>();
+        Set<Course> courses = new TreeSet<>();
         for (Integer day : daySelected)
             for (Integer week: weekSelected)
             {
@@ -182,7 +178,6 @@ public class AddLocalCourseActivity extends AppCompatActivity implements View.On
                 course.setEnd_time(courseEnd);
                 course.setWeekNo(week);
                 courses.add(course);
-                DebugHelper.showCourse(course);
             }
         //不存在冲突 则开始添加课程
         submitCourse(courses);
@@ -200,7 +195,6 @@ public class AddLocalCourseActivity extends AppCompatActivity implements View.On
     protected boolean haveConflict(int week, int day, int start,int end){
         List<Course> courses = LitePal.where("weekNo = ? and day = ?", week+"",day+"").find(Course.class);
         for (Course course : courses){
-            DebugHelper.showCourse(course);
             if (!(course.getStart_time()> end || course.getEnd_time() < start))
             {
                 return true;
@@ -209,8 +203,8 @@ public class AddLocalCourseActivity extends AppCompatActivity implements View.On
         return false;
     }
 
-    private void submitCourse(List<Course> cours){
-        for (Course course: cours){
+    private void submitCourse(Set<Course> courses){
+        for (Course course: courses){
             course.save();
         }
     }

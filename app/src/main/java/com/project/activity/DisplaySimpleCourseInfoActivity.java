@@ -21,8 +21,6 @@ import com.project.adapter.CoursesInfoAdapter;
 import com.project.fragment.DisplayAllCourseFragment;
 import com.project.item.Course;
 import com.project.item.CourseSimpleInfo;
-import com.project.tools.DebugHelper;
-
 import org.litepal.LitePal;
 
 import java.util.ArrayList;
@@ -86,7 +84,6 @@ public class DisplaySimpleCourseInfoActivity extends AppCompatActivity implement
             if (tempInfo.equals(new CourseSimpleInfo(course))){
                 tempInfo.weeks.add(course.getWeekNo());
             }else{
-                DebugHelper.showCourse(course);
                 courseSimpleInfos.add(tempInfo);
                 tempInfo = new CourseSimpleInfo(course);
             }

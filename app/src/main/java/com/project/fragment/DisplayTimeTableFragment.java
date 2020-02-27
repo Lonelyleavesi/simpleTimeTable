@@ -32,7 +32,6 @@ import com.project.item.CourseTime;
 import com.project.tools.CalendarTranslate;
 import com.project.tools.CustomTime;
 import com.project.tools.DataBaseCustomTools;
-import com.project.tools.DebugHelper;
 
 import org.litepal.LitePal;
 
@@ -188,7 +187,6 @@ public class DisplayTimeTableFragment extends Fragment implements View.OnClickLi
                                                 .find(Course.class);
             int start_no = 1;
             for (Course course : coursesInDay){
-                DebugHelper.showCourse(course);
                 maxRowNum = course.getEnd_time() > maxRowNum ? course.getEnd_time() : maxRowNum;
                 while (start_no < course.getStart_time()){
                     start_no ++;
@@ -306,7 +304,6 @@ public class DisplayTimeTableFragment extends Fragment implements View.OnClickLi
         List<Course> needAlarm = LitePal.where( "weekno = ? and day >= ?",currentWeek+"",todayInWeek+"")
                                         .find(Course.class);
         for (Course course : needAlarm){
-            DebugHelper.showCourse(course);
             createSimpleAlarm(course,alarmsetting,courseTimes);
         }
     }
