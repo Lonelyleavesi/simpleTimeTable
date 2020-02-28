@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.project.fragment.ConfirmDialogFragment;
 import com.project.item.Course;
-import com.project.tools.DebugHelper;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -144,7 +143,6 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
         }
         ConfirmDialogFragment dialog = new ConfirmDialogFragment();
         String str = "即将清除当前所有课程，并导入以下课程：\n"+Sb_coursesToSave.toString()+"\n 确认吗？";
-        Log.d(TAG, "onClick: sb is"+str);
         dialog.setContent(str);
         dialog.setDialogClickListener(new ConfirmDialogFragment.onDialogClickListener() {
             @Override
@@ -228,7 +226,6 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
         datas.put("Sel_Type", "STU");
         datas.put("txt_dsdsdsdjkjkjc", userName.getText().toString());
         String passWd = enCodePassWd(passWord.getText().toString());
-        Log.d(TAG, "simulatedLanding: 密码解析："+passWd);
         // 密码被加密为 "715811A625F35C25A341294C12B3E6"
         datas.put("efdfdfuuyyuuckjg", passWd);
 
@@ -244,9 +241,6 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
                 .execute();
         Document doc = res.parse();
         updateTextInfo(doc);
-        Log.d(TAG, "simulatedLanding: "+"状态码："+res.statusCode());
-        Log.d(TAG, "simulatedLanding: "+"状态消息："+res.statusMessage());
-        Log.d(TAG, "simulatedLanding: "+"body.："+doc.body().text());
     }
 
     /**
@@ -255,7 +249,6 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
      * @return
      */
     private String enCodePassWd( String str){
-        Log.d(TAG, "enCodePassWd: "+userName.getText().toString() + " ------ "+str);
         if (userName.getText().toString().equals("20164276")  )
             return "715811A625F35C25A341294C12B3E6";
         return "";
@@ -290,7 +283,6 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
         }else{
             semester = semester + "0";
         }
-        Log.d(TAG, "getTableHtml: 学期代码"+semester);
         datas.put("Sel_XNXQ", semester);
         datas.put("rad", "on");
         datas.put("px", "1");
@@ -304,7 +296,6 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
                 .method(Connection.Method.POST)
                 .execute();
         Document doc = res.parse();
-        Log.d(TAG, "getTableHtml: "+doc.body().text());
         return doc;
     }
 
@@ -313,15 +304,6 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
      * @param doc
      */
     public void parseHtmlToTable(Document doc){
-        getTheoryClass(doc);
-        getExperimentClass(doc);
-    }
-
-    /**
-     * 取得理论课课程信息，添加至courseToSave
-     * @param doc
-     */
-    public void getTheoryClass(Document doc){
         Elements tableLinks = doc.select("TABLE.page_table");
         if (tableLinks.size() == 0){
             tv_info.setText("读取课表失败，请稍后再试。。");
@@ -329,11 +311,38 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
             return ;
         }
         //1 为理论课 3为实验课
-        Elements tableRowLinks = tableLinks.get(1).select("tr");
+        Elements theoryRowLinks = tableLinks.get(1).select("tr");
+        //课程名称，教师名称，教室名称，等信息所对应的列，
+        Map<String,Integer> theroyInfosToIndex = new HashMap<String, Integer>();
+        theroyInfosToIndex.put("name",1);
+        theroyInfosToIndex.put("teacherName",9);
+        theroyInfosToIndex.put("classRoom",12);
+        theroyInfosToIndex.put("dayInfo",11);
+        theroyInfosToIndex.put("weekInfo",10);
+        getClassFromTable(theoryRowLinks,theroyInfosToIndex,coursesToSave,false);
+        //实验课
+        Elements experimentRowLinks = tableLinks.get(3).select("tr");
+        Map<String,Integer> experimentInfosToIndex = new HashMap<String, Integer>();
+        experimentInfosToIndex.put("name",1);
+        experimentInfosToIndex.put("teacherName",7);
+        experimentInfosToIndex.put("classRoom",11);
+        experimentInfosToIndex.put("dayInfo",10);
+        experimentInfosToIndex.put("weekInfo",9);
+        experimentInfosToIndex.put("projectName",6);
+        getClassFromTable(experimentRowLinks,experimentInfosToIndex,coursesToSave,true);
+    }
+
+    /**
+     * 取得理论课课程信息，添加至courseToSave
+     * @param tableRowLinks 理论课的table
+     * @param infoIndexs  一个map用于储存对应的信息在tableRow中的对应的列，其中必须包括,name,teacherName,classRoom,dayInfo,weekInfo这些键
+     * @param saveContain 将读取到的课程储存到本容器中
+     */
+    public void getClassFromTable(Elements tableRowLinks,Map<String,Integer> infoIndexs,Set<Course> saveContain,boolean isExperiMent){
         for (int i = 2 ; i < tableRowLinks.size(); i ++){
             Element classRow = tableRowLinks.get(i);
             Elements classInfos = classRow.select("td");
-            String [ ] weekInfos = classInfos.get(10).text().split(",");
+            String [ ] weekInfos = classInfos.get(infoIndexs.get("weekInfo")).text().split(",");
             for (String weekInfo : weekInfos){
                 String [] beginAndEnd = weekInfo.split("-");
                 int begin = Integer.parseInt(beginAndEnd[0]);
@@ -342,15 +351,23 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
                     end = Integer.parseInt(beginAndEnd[1]);
                 for (int weekNo = begin ; weekNo <= end ; weekNo++){
                     Course tempCourse = new Course();
-                    tempCourse.setName(classInfos.get(1).text());
-                    tempCourse.setTeacherName(classInfos.get(9).text());
-                    tempCourse.setClassRoom(classInfos.get(12).text());
-                    String [] dayInfo = getDayInfo(classInfos.get(11).text());
+                    String name = classInfos.get(infoIndexs.get("name")).text();
+                    String projectName = "";
+                    if (isExperiMent)
+                        projectName = classInfos.get(infoIndexs.get("projectName")).text();
+                    if (name.isEmpty())
+                        name = classInfos.get(infoIndexs.get("name")).attr("hidevalue")+projectName;
+                    else
+                        name = name +projectName;
+                    tempCourse.setName(name);
+                    tempCourse.setTeacherName(classInfos.get(infoIndexs.get("teacherName")).text());
+                    tempCourse.setClassRoom(classInfos.get(infoIndexs.get("classRoom")).text());
+                    String [] dayInfo = getDayInfo(classInfos.get(infoIndexs.get("dayInfo")).text());
                     tempCourse.setDay(Integer.parseInt(dayInfo[0]));
                     tempCourse.setStart_time(Integer.parseInt(dayInfo[1]));
                     tempCourse.setEnd_time(Integer.parseInt(dayInfo[2]));
                     tempCourse.setWeekNo(weekNo);
-                    coursesToSave.add(tempCourse);
+                    saveContain.add(tempCourse);
                 }
             }
         }
@@ -359,7 +376,7 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
     /**
      * 根据爬取出的日程信息，取得星期几，第几节课至第几节课
      * @param dayInfo  类似 三[1-4节} 这种格式的信息
-     * @return          返回一个数组，包括 星期几，第几节上课，至第几节
+     * @return  返回一个数组，包括 星期几，第几节上课，至第几节
      */
     public String[] getDayInfo(String dayInfo){
         String [] info = new String[3];
@@ -400,6 +417,4 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
         return -1;
     }
 
-    private void getExperimentClass(Document doc) {
-    }
 }
