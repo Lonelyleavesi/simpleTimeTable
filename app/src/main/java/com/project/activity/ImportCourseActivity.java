@@ -50,7 +50,6 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
     EditText userName;
     EditText passWord;
     EditText verifyCode;
-    Set<Course> coursesToSave;
     private void initMember(){
         context = this;
         versifyPassWd = false;
@@ -111,6 +110,7 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
             case R.id.button_confrim_import:{
                 finish_flag = true;
                 tv_info.setText("");
+                coursesToSave.clear();
                 if (schoolStartYear.getText().toString().isEmpty()){
                     tv_info.setText("入学年份不能为空..");
                     return ;
@@ -129,6 +129,7 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    Set<Course> coursesToSave;
     /**
      * 展示确认框
      */
@@ -189,6 +190,7 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
                     finish_flag = false;
                 } catch (IOException e) {
                     e.printStackTrace();
+                    finish_flag = false;
                 }
             }
         }).start();
@@ -202,16 +204,13 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
     private Map<String,String> getCookie() throws IOException {
         Map<String, String> cookie = new HashMap<String, String>();
         String url = CQU_JXGL_HOME_URL;
+        Log.d(TAG, "getCookie: 取得cookie");
         Connection.Response response = Jsoup.connect(url)
                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36")
                 .method(Connection.Method.GET)
                 .execute();
         cookie = response.cookies();
-        System.out.println(response.statusCode());
-        System.out.println(response.cookies());
-        for (Map.Entry<String, String> entry : cookie.entrySet()) {
-            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-        }
+        Log.d(TAG, "getCookie: cookies is "+response.cookies());
         return  cookie;
     }
 
@@ -228,7 +227,7 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
         String passWd = enCodePassWd(passWord.getText().toString());
         // 密码被加密为 "715811A625F35C25A341294C12B3E6"
         datas.put("efdfdfuuyyuuckjg", passWd);
-
+        Log.d(TAG, "simulatedLanding: 模拟登陆");
         Connection connection = Jsoup.connect(CQU_JXGL_LOGIN_URL);
         connection.header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36");
         connection.cookies(cookies);
@@ -262,6 +261,7 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
         Element link = doc.select("span#divLogNote").first();
         String standindInfo = link.text();
         tv_info.setText(standindInfo);
+        Log.d(TAG, "updateTextInfo: "+standindInfo);
         if (standindInfo.equals("正在加载权限数据...")){
             versifyPassWd = true;
         }
@@ -296,6 +296,7 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
                 .method(Connection.Method.POST)
                 .execute();
         Document doc = res.parse();
+        Log.d(TAG, "getTableHtml: res is "+doc.text());
         return doc;
     }
 
@@ -321,6 +322,9 @@ public class ImportCourseActivity extends AppCompatActivity implements View.OnCl
         theroyInfosToIndex.put("weekInfo",10);
         getClassFromTable(theoryRowLinks,theroyInfosToIndex,coursesToSave,false);
         //实验课
+        if(tableLinks.size() <= 2){
+            return ;
+        }
         Elements experimentRowLinks = tableLinks.get(3).select("tr");
         Map<String,Integer> experimentInfosToIndex = new HashMap<String, Integer>();
         experimentInfosToIndex.put("name",1);
