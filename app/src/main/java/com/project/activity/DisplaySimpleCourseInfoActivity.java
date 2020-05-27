@@ -67,6 +67,7 @@ public class DisplaySimpleCourseInfoActivity extends AppCompatActivity implement
     static ListView lv_courseInfo;
     static List<CourseSimpleInfo> courseSimpleInfos;
     static CoursesInfoAdapter coursesInfoAdapter;
+
     /**
      * 展示listView，先根据课程名查找出所有Course对象，然后封装成CourseInfo对象，然后加入list展示
      */

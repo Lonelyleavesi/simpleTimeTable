@@ -168,17 +168,17 @@ public class SetInterfaceFragment extends Fragment implements View.OnClickListen
         writer.close();
     }
 
-    private void saveCoursesTimes()throws IOException {
-        FileOutputStream out = null;
-        BufferedWriter writer = null;
-        out = getContext().openFileOutput("courseTime",Context.MODE_PRIVATE);
-        writer = new BufferedWriter(new OutputStreamWriter(out));
-        for (CourseTime courseTime : courseTimeList)
-        {
-            writer.write(courseTime.toString()+"\n");
+        private void saveCoursesTimes()throws IOException {
+            FileOutputStream out = null;
+            BufferedWriter writer = null;
+            out = getContext().openFileOutput("courseTime",Context.MODE_PRIVATE);
+            writer = new BufferedWriter(new OutputStreamWriter(out));
+            for (CourseTime courseTime : courseTimeList)
+            {
+                writer.write(courseTime.toString()+"\n");
+            }
+            writer.close();
         }
-        writer.close();
-    }
 
     /**
      * 储存课程提醒相关设置，按照“是否响铃，是否震动，提前时间”储存在alarmSetting文件中

@@ -7,6 +7,7 @@ import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.AlarmClock;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -317,11 +318,16 @@ public class DisplayTimeTableFragment extends Fragment implements View.OnClickLi
 
         CustomTime alarmTime = courseTimes.get(course.getStart_time()-1).start_time;
         alarmTime.addMinute(0-Integer.parseInt(alarmSetting[2]));
-        if( course.getDay() == todayInWeek && alarmTime.hour <= hour){
-            if (alarmTime.minute <= minute){
-              return ;
+        if( course.getDay() == todayInWeek){
+            if (alarmTime.hour < hour){
+                return;
+            }else if (alarmTime.hour == hour){
+                if (alarmTime.minute <= minute){
+                    return ;
+                }
             }
         }
+
         //设置时间
         Intent alarm = new Intent(AlarmClock.ACTION_SET_ALARM);
         alarm .putExtra(AlarmClock.EXTRA_HOUR, alarmTime.hour);
